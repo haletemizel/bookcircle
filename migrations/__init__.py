@@ -1,1 +1,0 @@
-# Ödev kısıtı gereği eklenmiştir

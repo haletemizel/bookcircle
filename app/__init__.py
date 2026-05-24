@@ -23,4 +23,6 @@ def create_app(config_class=Config):
     from app.auth import auth as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
+    from app import models
+
     return app
