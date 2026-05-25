@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Kitaplığım - BookCircle{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h2 class="fw-bold mb-0">📚 Kitaplığım</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('main.add_book') }}" class="btn btn-primary rounded-pill px-4 fw-semibold shadow-sm">+ Yeni Kitap Ekle</a>
+    </div>
+</div>
+
+{% if not progresses %}
+<div class="card border-0 shadow-sm rounded-4 text-center py-5">
+    <div class="card-body">
+        <h4 class="text-muted mb-3">Kitaplığınız şu an boş.</h4>
+        <p class="text-muted mb-4">Okumaya başlamak için yeni bir kitap ekleyin.</p>
+        <a href="{{ url_for('main.add_book') }}" class="btn btn-outline-primary rounded-pill px-4">Hemen Ekle</a>
+    </div>
+</div>
+{% else %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    {% for progress in progresses %}
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title fw-bold mb-0 text-truncate" title="{{ progress.book.title }}">{{ progress.book.title }}</h5>
+                    {% if progress.status == "Bitti" %}
+                        <span class="badge bg-success rounded-pill px-2 py-1"><small>Bitti</small></span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark rounded-pill px-2 py-1"><small>Okunuyor</small></span>
+                    {% endif %}
+                </div>
+                <h6 class="card-subtitle mb-3 text-muted">{{ progress.book.author }}</h6>
+                
+                {% if progress.book.genre %}
+                    <span class="badge bg-light text-secondary border mb-3">{{ progress.book.genre }}</span>
+                {% endif %}
+
+                <!-- İlerleme Çubuğu -->
+                {% set percentage = (progress.current_page / progress.book.total_pages * 100) | round(1) %}
+                <div class="mb-2 d-flex justify-content-between align-items-center">
+                    <small class="text-muted fw-semibold">İlerleme: {{ percentage }}%</small>
+                    <small class="text-muted">{{ progress.current_page }} / {{ progress.book.total_pages }} sayfa</small>
+                </div>
+                <div class="progress mb-4" style="height: 8px;">
+                    <div class="progress-bar {% if percentage == 100 %}bg-success{% else %}bg-primary{% endif %}" 
+                         role="progressbar" 
+                         style="width: {{ percentage }}%;" 
+                         aria-valuenow="{{ percentage }}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
+                    </div>
+                </div>
+
+                <!-- Güncelleme Formu -->
+                {% if progress.status != "Bitti" %}
+                <form action="{{ url_for('main.update_progress', progress_id=progress.id) }}" method="POST" class="d-flex align-items-center gap-2 mt-auto">
+                    <input type="number" name="current_page" class="form-control form-control-sm border-secondary bg-light" 
+                           value="{{ progress.current_page }}" min="0" max="{{ progress.book.total_pages }}" required>
+                    <button type="submit" class="btn btn-sm btn-dark fw-semibold px-3">Güncelle</button>
+                </form>
+                {% else %}
+                <div class="mt-auto d-flex align-items-center text-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                    <small class="fw-bold">Tebrikler, bu kitabı bitirdiniz!</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .transition-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .transition-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+</style>
+{% endif %}
+{% endblock %}

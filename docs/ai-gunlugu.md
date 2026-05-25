@@ -15,3 +15,7 @@
 ## Oturum 4: Kimlik Doğrulama (Auth) Altyapısı ve Formlar
 - Hedef: Kullanıcı kayıt (Register) ve giriş (Login) işlemlerini yönetecek güvenli bir auth yapısı kurmak.
 - AI ile Etkileşim ve Karar Süreci: Flask-WTF kullanarak CSRF korumalı form yapıları kurgulandı. Kayıt esnasında veritabanında mükerrer (aynı) kullanıcı adı veya e-posta adresi oluşmasını engelleyen özel veritabanı validator fonksiyonları (`validate_username`, `validate_email`) backend'e entegre edildi. Güvenlik kısıtlarına tam uyularak şifre doğrulama mantığı modeldeki hash yapısı üzerinden bağlandı.
+
+## Oturum 5: Kitap Yönetimi ve Okuma Takip Backend Mantığı
+- Hedef: Kullanıcıların kütüphanelerine kitap ekleyebileceği ve okuma ilerlemelerini güncelleyebileceği backend altyapısını kurmak.
+- AI ile Etkileşim ve Karar Süreci: Kitap verilerini toplamak için `BookForm` sınıfı oluşturuldu. `main` blueprint'i altında `@login_required` ile korunan rotalar yazıldı. `/update-progress` rotasında, kullanıcının girdiği güncel sayfa sayısı eğer kitabın toplam sayfa sayısına eşitse, okuma durumunun otomatik olarak 'Bitti' şeklinde güncellenmesini sağlayan akıllı bir backend lojiği kurgulandı.
