@@ -27,3 +27,7 @@
 ## Oturum 7: UI/UX Geliştirmeleri ve Görsel Modernizasyon
 - Hedef: Yalın Bootstrap arayüzünü daha kullanıcı dostu, estetik ve modern bir tasarıma dönüştürmek.
 - AI ile Etkileşim ve Karar Süreci: Şablonlara soft-shadows (hafif gölgeler), yuvarlatılmış köşeler (rounded-3, rounded-4) ve estetik renk paletleri entegre edildi. Navbar ve kart tasarımları premium bir görünüm için güncellendi, Inter fontu yerine daha yuvarlak hatlara sahip Poppins fontuna geçildi.
+
+## Oturum 8: Özel Hata Sayfalarının Entegrasyonu
+- Hedef: Kullanıcıların hatalı URL girdiklerinde veya sunucu kaynaklı pürüzlerde sistemde kalmasını sağlayacak şık hata sayfaları tasarlamak.
+- AI ile Etkileşim ve Karar Süreci: Flask errorhandler dekoratörleri kullanılarak 404 ve 500 hataları yakalandı. `app/templates/errors/` altında base.html ile uyumlu iki yeni şablon oluşturuldu.

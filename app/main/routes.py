@@ -73,3 +73,12 @@ def update_progress(progress_id):
     else:
         flash('Böyle bir kayıt bulunamadı veya yetkiniz yok.', 'danger')
     return redirect(url_for('main.index'))
+
+@main.app_errorhandler(404)
+def not_found_error(error):
+    return render_template('errors/404.html'), 404
+
+@main.app_errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('errors/500.html'), 500
