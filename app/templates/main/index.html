@@ -46,8 +46,8 @@
                     <small class="text-muted fw-semibold">İlerleme: {{ percentage }}%</small>
                     <small class="text-muted">{{ progress.current_page }} / {{ progress.book.total_pages }} sayfa</small>
                 </div>
-                <div class="progress mb-4" style="height: 8px;">
-                    <div class="progress-bar {% if percentage == 100 %}bg-success{% else %}bg-primary{% endif %}" 
+                <div class="progress mb-4 rounded-pill" style="height: 8px;">
+                    <div class="progress-bar rounded-pill {% if percentage == 100 %}bg-success opacity-75{% else %}bg-info opacity-75{% endif %}" 
                          role="progressbar" 
                          style="width: {{ percentage }}%;" 
                          aria-valuenow="{{ percentage }}" 
