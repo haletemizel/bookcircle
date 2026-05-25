@@ -31,3 +31,7 @@
 ## Oturum 8: Özel Hata Sayfalarının Entegrasyonu
 - Hedef: Kullanıcıların hatalı URL girdiklerinde veya sunucu kaynaklı pürüzlerde sistemde kalmasını sağlayacak şık hata sayfaları tasarlamak.
 - AI ile Etkileşim ve Karar Süreci: Flask errorhandler dekoratörleri kullanılarak 404 ve 500 hataları yakalandı. `app/templates/errors/` altında base.html ile uyumlu iki yeni şablon oluşturuldu.
+
+## Oturum 9: Kitap Silme (Delete) Backend Mantığının Kurulması
+- Hedef: Kullanıcıların kütüphanelerindeki kitapları kalıcı olarak silebilmesi için güvenli bir backend rotası oluşturmak.
+- AI ile Etkileşim ve Karar Süreci: `main` blueprint'i altında `@login_required` ile korunan `/delete-book/<int:book_id>` POST rotası kurgulandı. Ajanın kitabı veritabanında bırakıp sadece ilerleme kaydını silme önerisi reddedildi. Cascade delete mantığıyla kitabın tamamen silinmesi sağlandı.

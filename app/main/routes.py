@@ -74,6 +74,36 @@ def update_progress(progress_id):
         flash('Böyle bir kayıt bulunamadı veya yetkiniz yok.', 'danger')
     return redirect(url_for('main.index'))
 
+@main.route('/delete-book/<int:book_id>', methods=['POST'])
+@login_required
+def delete_book(book_id):
+    book = db.session.get(Book, book_id)
+    if book:
+        # O anki kullanıcının bu kitabı okuyup okumadığını kontrol et
+        progress = db.session.scalar(
+            select(ReadingProgress).where(
+                (ReadingProgress.user_id == current_user.id) & 
+                (ReadingProgress.book_id == book.id)
+            )
+        )
+        if progress:
+            # Cascade delete etkisini sağlamak için kitaba bağlı tüm progress kayıtlarını siliyoruz
+            all_progresses = db.session.scalars(
+                select(ReadingProgress).where(ReadingProgress.book_id == book.id)
+            ).all()
+            for p in all_progresses:
+                db.session.delete(p)
+            
+            # Ana kitap nesnesini sil
+            db.session.delete(book)
+            db.session.commit()
+            flash('Kitap başarıyla silindi!', 'success')
+        else:
+            flash('Bu kitabı silme yetkiniz yok.', 'danger')
+    else:
+        flash('Silinmek istenen kitap bulunamadı.', 'danger')
+    return redirect(url_for('main.index'))
+
 @main.app_errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404
