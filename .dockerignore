@@ -1,0 +1,26 @@
+# Version control
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env/
+.venv/
+
+# Environment variables
+.env
+
+# SQLite Database (Volume ile dışarıdan mount edilmesi önerilir)
+instance/
+app.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp

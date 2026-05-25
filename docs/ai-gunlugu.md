@@ -19,3 +19,7 @@
 ## Oturum 5: Kitap Yönetimi ve Okuma Takip Backend Mantığı
 - Hedef: Kullanıcıların kütüphanelerine kitap ekleyebileceği ve okuma ilerlemelerini güncelleyebileceği backend altyapısını kurmak.
 - AI ile Etkileşim ve Karar Süreci: Kitap verilerini toplamak için `BookForm` sınıfı oluşturuldu. `main` blueprint'i altında `@login_required` ile korunan rotalar yazıldı. `/update-progress` rotasında, kullanıcının girdiği güncel sayfa sayısı eğer kitabın toplam sayfa sayısına eşitse, okuma durumunun otomatik olarak 'Bitti' şeklinde güncellenmesini sağlayan akıllı bir backend lojiği kurgulandı.
+
+## Oturum 6: Docker Konteynerizasyon Altyapısı
+- Hedef: Projenin her ortamda bağımsız, izole ve güvenli bir şekilde çalışabilmesi için Docker konfigürasyonunu tamamlamak.
+- AI ile Etkileşim ve Karar Süreci: Sadece tekil bir Dockerfile yerine, dağıtım standartlarına uygun olarak `docker-compose` yapısı kuruldu. Flask'in yerleşik geliştirme sunucusu yerine, production (üretim) ortamları için güvenli ve performanslı olan `gunicorn` WSGI sunucusu tercih edildi. İmajın hafif kalması için `python:3.12-slim` taban imajı kullanıldı.
