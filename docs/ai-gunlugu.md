@@ -48,3 +48,7 @@
 - Hedef: Kullanıcının ana sayfadaki kitap listesinde sayfalar arasında (Önceki/Sonraki) geçiş yapabilmesini sağlamak.
 - AI ile Etkileşim ve Karar Süreci: app/templates/main/index.html şablonuna Bootstrap 5 standartlarına uygun, dinamik aktiflik durumuna sahip (disabled/active) sayfalama butonları entegre edildi.
 
+## Oturum 13: Book Clubs (Kitap Kulüpleri) Veritabanı Modeli ve İlişkilerinin Tasarlanması
+- Hedef: Kullanıcıların platform üzerinde kitap kulüpleri oluşturabilmesi ve bu kulüplere üye olabilmesi için gerekli ilişkisel veritabanı altyapısını hazırlamak.
+- AI ile Etkileşim ve Karar Süreci: app/models.py dosyasına BookClub modeli eklendi. Kullanıcılar ile kulüpler arasında Many-to-Many (Çoka Çok) ilişki kurabilmek amacıyla 'club_members' association tablosu modellendi.
+
