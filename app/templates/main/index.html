@@ -24,8 +24,24 @@
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     {% for progress in progresses %}
     <div class="col">
-        <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover">
-            <div class="card-body p-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover overflow-hidden">
+            <!-- Kapak Resmi (Image URL) -->
+            {% if progress.book.image_url %}
+            <div style="height: 250px; overflow: hidden; background-color: #f8f9fa;" class="d-flex align-items-center justify-content-center">
+                <img src="{{ progress.book.image_url }}" class="card-img-top" alt="{{ progress.book.title }} Kapak" style="object-fit: cover; width: 100%; height: 100%;">
+            </div>
+            {% else %}
+            <div style="height: 250px; background-color: #e9ecef;" class="d-flex align-items-center justify-content-center text-muted">
+                <div class="text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-book mb-2 opacity-50" viewBox="0 0 16 16">
+                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                    </svg>
+                    <div class="small fw-semibold opacity-75">Kapak Görseli Yok</div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h5 class="card-title fw-bold mb-0 text-truncate" title="{{ progress.book.title }}">{{ progress.book.title }}</h5>
                     {% if progress.status == "Bitti" %}
@@ -34,55 +50,69 @@
                         <span class="badge bg-warning text-dark rounded-pill px-2 py-1"><small>Okunuyor</small></span>
                     {% endif %}
                 </div>
-                <h6 class="card-subtitle mb-3 text-muted">{{ progress.book.author }}</h6>
+                
+                <h6 class="card-subtitle mb-2 text-muted">{{ progress.book.author }}</h6>
+                
+                <!-- Seri Bilgisi Rozeti -->
+                {% if progress.book.series_name %}
+                <div class="mb-3">
+                    <span class="badge bg-secondary opacity-75 fw-normal rounded-pill">
+                        {{ progress.book.series_name }} {% if progress.book.volume_number %} - {{ progress.book.volume_number }}. Cilt {% endif %}
+                    </span>
+                </div>
+                {% endif %}
                 
                 {% if progress.book.genre %}
-                    <span class="badge bg-light text-secondary border mb-3">{{ progress.book.genre }}</span>
+                    <div class="mb-3">
+                        <span class="badge bg-light text-secondary border">{{ progress.book.genre }}</span>
+                    </div>
                 {% endif %}
 
                 <!-- İlerleme Çubuğu -->
                 {% set percentage = (progress.current_page / progress.book.total_pages * 100) | round(1) %}
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                    <small class="text-muted fw-semibold">İlerleme: {{ percentage }}%</small>
-                    <small class="text-muted">{{ progress.current_page }} / {{ progress.book.total_pages }} sayfa</small>
-                </div>
-                <div class="progress mb-4 rounded-pill" style="height: 8px;">
-                    <div class="progress-bar rounded-pill {% if percentage == 100 %}bg-success opacity-75{% else %}bg-info opacity-75{% endif %}" 
-                         role="progressbar" 
-                         style="width: {{ percentage }}%;" 
-                         aria-valuenow="{{ percentage }}" 
-                         aria-valuemin="0" 
-                         aria-valuemax="100">
+                <div class="mt-auto pt-3">
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <small class="text-muted fw-semibold">İlerleme: {{ percentage }}%</small>
+                        <small class="text-muted">{{ progress.current_page }} / {{ progress.book.total_pages }} sayfa</small>
                     </div>
-                </div>
-
-                <!-- İşlem Butonları -->
-                <div class="d-flex justify-content-between align-items-end mt-auto pt-2">
-                    <div class="flex-grow-1 me-3">
-                        {% if progress.status != "Bitti" %}
-                        <form action="{{ url_for('main.update_progress', progress_id=progress.id) }}" method="POST" class="d-flex align-items-center gap-2">
-                            <input type="number" name="current_page" class="form-control form-control-sm border-secondary bg-light" 
-                                   value="{{ progress.current_page }}" min="0" max="{{ progress.book.total_pages }}" required>
-                            <button type="submit" class="btn btn-sm btn-dark fw-semibold px-3">Güncelle</button>
-                        </form>
-                        {% else %}
-                        <div class="d-flex align-items-center text-success pb-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                            </svg>
-                            <small class="fw-bold">Tebrikler, bu kitabı bitirdiniz!</small>
+                    <div class="progress mb-4 rounded-pill" style="height: 8px;">
+                        <div class="progress-bar rounded-pill {% if percentage == 100 %}bg-success opacity-75{% else %}bg-info opacity-75{% endif %}" 
+                             role="progressbar" 
+                             style="width: {{ percentage }}%;" 
+                             aria-valuenow="{{ percentage }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
                         </div>
-                        {% endif %}
                     </div>
 
-                    <!-- Silme Formu -->
-                    <form action="{{ url_for('main.delete_book', book_id=progress.book.id) }}" method="POST" onsubmit="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Kitabı Sil">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                              <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                            </svg>
-                        </button>
-                    </form>
+                    <!-- İşlem Butonları -->
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="flex-grow-1 me-3">
+                            {% if progress.status != "Bitti" %}
+                            <form action="{{ url_for('main.update_progress', progress_id=progress.id) }}" method="POST" class="d-flex align-items-center gap-2">
+                                <input type="number" name="current_page" class="form-control form-control-sm border-secondary bg-light" 
+                                       value="{{ progress.current_page }}" min="0" max="{{ progress.book.total_pages }}" required>
+                                <button type="submit" class="btn btn-sm btn-dark fw-semibold px-3 rounded-pill">Güncelle</button>
+                            </form>
+                            {% else %}
+                            <div class="d-flex align-items-center text-success pb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                                <small class="fw-bold">Tebrikler, bu kitabı bitirdiniz!</small>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Silme Formu -->
+                        <form action="{{ url_for('main.delete_book', book_id=progress.book.id) }}" method="POST" onsubmit="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" title="Kitabı Sil" style="width: 32px; height: 32px; padding: 0;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

@@ -64,3 +64,7 @@
 - Hedef: Kullanıcıların kitaplara kapak resmi ekleyebilmesi için veritabanı ve form altyapısını güncellemek.
 - AI ile Etkileşim ve Karar Süreci: app/models.py dosyasındaki Book modeline 'image_url' (String) kolonu eklendi. app/main/forms.py dosyasındaki kitap ekleme formuna bu alan dahil edildi. Değişiklikler Flask-Migrate ile veritabanına yansıtıldı.
 
+## Oturum 17: Kitap Listesi Arayüzünün Modernize Edilmesi
+- Hedef: Ana sayfadaki standart kitap listesini, kapak resimlerini ve seri bilgilerini içeren modern Bootstrap 5 kartlarına dönüştürmek.
+- AI ile Etkileşim ve Karar Süreci: app/templates/main/index.html şablonu güncellendi. Kitaplar artık kapak resmi (image_url), seri adı/cilt numarası ve okuma ilerlemesini gösteren Bootstrap progress bar içeren şık bir Grid/Card yapısında listeleniyor.
+
