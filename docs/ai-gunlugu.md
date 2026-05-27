@@ -60,3 +60,7 @@
 - Hedef: Kullanıcıların serilere ait kitapları (Örn: Yüzüklerin Efendisi - 1. Cilt) takip edebilmesi için veritabanı altyapısını kurmak.
 - AI ile Etkileşim ve Karar Süreci: app/models.py dosyasındaki kitap veritabanı modeline 'series_name' (String) ve 'volume_number' (Integer) alanları eklendi. Değişiklikleri veritabanına yansıtmak için migration (göç) işlemi yapıldı.
 
+## Oturum 16: Kitap Kapak Resmi (Image URL) Desteğinin Eklenmesi
+- Hedef: Kullanıcıların kitaplara kapak resmi ekleyebilmesi için veritabanı ve form altyapısını güncellemek.
+- AI ile Etkileşim ve Karar Süreci: app/models.py dosyasındaki Book modeline 'image_url' (String) kolonu eklendi. app/main/forms.py dosyasındaki kitap ekleme formuna bu alan dahil edildi. Değişiklikler Flask-Migrate ile veritabanına yansıtıldı.
+

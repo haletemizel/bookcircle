@@ -7,4 +7,5 @@ class BookForm(FlaskForm):
     author = StringField('Yazar', validators=[DataRequired()])
     total_pages = IntegerField('Toplam Sayfa', validators=[DataRequired(), NumberRange(min=1)])
     genre = StringField('Tür')
+    image_url = StringField('Kapak Resmi URL (Opsiyonel)')
     submit = SubmitField('Kitabı Ekle')
