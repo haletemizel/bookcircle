@@ -43,6 +43,8 @@ class Book(db.Model):
     author: Mapped[str] = mapped_column(String(140))
     total_pages: Mapped[int]
     genre: Mapped[Optional[str]] = mapped_column(String(64))
+    series_name: Mapped[Optional[str]] = mapped_column(String(140))
+    volume_number: Mapped[Optional[int]]
 
     reading_progresses: Mapped[List["ReadingProgress"]] = relationship(back_populates="book")
 

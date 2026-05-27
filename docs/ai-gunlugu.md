@@ -56,3 +56,7 @@
 - Hedef: Kullanıcının profil bilgilerini görebileceği şık bir arayüz tasarlamak ve ek puan kriterlerine uygun olarak kayıt tarihini sergilemek.
 - AI ile Etkileşim ve Karar Süreci: app/templates/main/profile.html şablonu oluşturuldu. Bootstrap 5 kart (Card) yapısı kullanılarak kullanıcı adı ve hakkında bilgileri listelendi; kullanıcının kayıt tarihini 'Member since...' formatında gösteren şık bir rozet (badge) entegre edildi.
 
+## Oturum 15: Kitap Serileri İçin Veritabanı Güncellemesi
+- Hedef: Kullanıcıların serilere ait kitapları (Örn: Yüzüklerin Efendisi - 1. Cilt) takip edebilmesi için veritabanı altyapısını kurmak.
+- AI ile Etkileşim ve Karar Süreci: app/models.py dosyasındaki kitap veritabanı modeline 'series_name' (String) ve 'volume_number' (Integer) alanları eklendi. Değişiklikleri veritabanına yansıtmak için migration (göç) işlemi yapıldı.
+
