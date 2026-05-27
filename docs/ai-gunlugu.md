@@ -44,3 +44,7 @@
 - Hedef: Ana sayfada biriken kitapların performansı olumsuz etkilemesini önlemek amacıyla sayfa başına limit getirmek.
 - AI ile Etkileşim ve Karar Süreci: Flask-SQLAlchemy'nin `.paginate()` fonksiyonu kullanılarak ana sayfa rotası güncellendi. Sayfa başına maksimum 5 kitap gösterilecek şekilde yapılandırma sağlandı.
 
+## Oturum 12: Pagination (Sayfalama) Arayüz Elementlerinin Entegrasyonu
+- Hedef: Kullanıcının ana sayfadaki kitap listesinde sayfalar arasında (Önceki/Sonraki) geçiş yapabilmesini sağlamak.
+- AI ile Etkileşim ve Karar Süreci: app/templates/main/index.html şablonuna Bootstrap 5 standartlarına uygun, dinamik aktiflik durumuna sahip (disabled/active) sayfalama butonları entegre edildi.
+
