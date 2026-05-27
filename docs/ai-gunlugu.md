@@ -52,3 +52,7 @@
 - Hedef: Kullanıcının kendi profil bilgilerini görebileceği ve şifre/bilgi güncellemesi yapabileceği bir alan oluşturmak.
 - AI ile Etkileşim ve Karar Süreci: app/main/routes.py dosyasına '@main.route("/profile", methods=["GET", "POST"])' rotası eklendi. Giriş yapmış kullanıcının bilgileri güvenli bir şekilde çekildi.
 
+## Oturum 14: Profil Sayfası Tasarımı ve Üyelik Tarihi Rozetinin Eklenmesi
+- Hedef: Kullanıcının profil bilgilerini görebileceği şık bir arayüz tasarlamak ve ek puan kriterlerine uygun olarak kayıt tarihini sergilemek.
+- AI ile Etkileşim ve Karar Süreci: app/templates/main/profile.html şablonu oluşturuldu. Bootstrap 5 kart (Card) yapısı kullanılarak kullanıcı adı ve hakkında bilgileri listelendi; kullanıcının kayıt tarihini 'Member since...' formatında gösteren şık bir rozet (badge) entegre edildi.
+
