@@ -39,3 +39,8 @@
 ## Oturum 10: Kitap Silme Arayüz Entegrasyonu
 - Hedef: Kullanıcının kitaplığım sayfasından doğrudan silme işlemini tetikleyebilmesini sağlamak.
 - AI ile Etkileşim ve Karar Süreci: `app/templates/main/index.html` içinde her kitabın alt kısmına Bootstrap standartlarına uygun, kırmızı renkli (`btn-outline-danger`) ve onay mekanizması (`confirm()`) içeren bir silme formu yerleştirildi.
+
+## Oturum 11: Kitap Listesi İçin Pagination (Sayfalama) Entegrasyonu
+- Hedef: Ana sayfada biriken kitapların performansı olumsuz etkilemesini önlemek amacıyla sayfa başına limit getirmek.
+- AI ile Etkileşim ve Karar Süreci: Flask-SQLAlchemy'nin `.paginate()` fonksiyonu kullanılarak ana sayfa rotası güncellendi. Sayfa başına maksimum 5 kitap gösterilecek şekilde yapılandırma sağlandı.
+

@@ -12,7 +12,7 @@
     </div>
 </div>
 
-{% if not progresses %}
+{% if not progresses.items %}
 <div class="card border-0 shadow-sm rounded-4 text-center py-5">
     <div class="card-body">
         <h4 class="text-muted mb-3">Kitaplığınız şu an boş.</h4>
@@ -89,6 +89,29 @@
     </div>
     {% endfor %}
 </div>
+
+<!-- Pagination Controls -->
+{% if progresses.pages > 1 %}
+<nav aria-label="Sayfa Navigasyonu" class="mt-5">
+    <ul class="pagination justify-content-center">
+        <li class="page-item {% if not progresses.has_prev %}disabled{% endif %}">
+            <a class="page-link rounded-start-pill px-3 shadow-sm" href="{{ url_for('main.index', page=progresses.prev_num) if progresses.has_prev else '#' }}" tabindex="-1" {% if not progresses.has_prev %}aria-disabled="true"{% endif %}>Önceki</a>
+        </li>
+        {% for page_num in progresses.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                <li class="page-item {% if page_num == progresses.page %}active{% endif %}">
+                    <a class="page-link px-3 shadow-sm" href="{{ url_for('main.index', page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link px-3 shadow-sm text-muted">...</span></li>
+            {% endif %}
+        {% endfor %}
+        <li class="page-item {% if not progresses.has_next %}disabled{% endif %}">
+            <a class="page-link rounded-end-pill px-3 shadow-sm" href="{{ url_for('main.index', page=progresses.next_num) if progresses.has_next else '#' }}" {% if not progresses.has_next %}aria-disabled="true"{% endif %}>Sonraki</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
 
 <style>
     .transition-hover {

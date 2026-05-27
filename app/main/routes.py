@@ -9,10 +9,13 @@ from app.models import Book, ReadingProgress
 @main.route('/')
 @login_required
 def index():
-    progresses = db.session.scalars(
-        select(ReadingProgress).where(ReadingProgress.user_id == current_user.id)
-    ).all()
-    # Henüz HTML dosyaları olmadığı için hata dönebilir, geçici olarak şablona yönlendiriyoruz
+    page = request.args.get('page', 1, type=int)
+    progresses = db.paginate(
+        select(ReadingProgress).where(ReadingProgress.user_id == current_user.id),
+        page=page,
+        per_page=5,
+        error_out=False
+    )
     return render_template('main/index.html', progresses=progresses)
 
 @main.route('/add-book', methods=['GET', 'POST'])
