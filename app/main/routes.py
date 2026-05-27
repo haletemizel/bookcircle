@@ -4,7 +4,7 @@ from sqlalchemy import select
 from app import db
 from app.main import main
 from app.main.forms import BookForm
-from app.models import Book, ReadingProgress
+from app.models import Book, ReadingProgress, User
 
 @main.route('/')
 @login_required
@@ -106,6 +106,34 @@ def delete_book(book_id):
     else:
         flash('Silinmek istenen kitap bulunamadı.', 'danger')
     return redirect(url_for('main.index'))
+
+@main.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        new_username = request.form.get('username')
+        new_password = request.form.get('password')
+        
+        updated = False
+        
+        if new_username and new_username != current_user.username:
+            user = db.session.scalar(select(User).where(User.username == new_username))
+            if user:
+                flash('Bu kullanıcı adı zaten kullanılıyor. Lütfen başka bir tane seçin.', 'danger')
+                return redirect(url_for('main.profile'))
+            current_user.username = new_username
+            updated = True
+            
+        if new_password:
+            current_user.set_password(new_password)
+            updated = True
+            
+        if updated:
+            db.session.commit()
+            flash('Profil bilgileriniz başarıyla güncellendi!', 'success')
+            return redirect(url_for('main.profile'))
+            
+    return render_template('main/profile.html')
 
 @main.app_errorhandler(404)
 def not_found_error(error):
