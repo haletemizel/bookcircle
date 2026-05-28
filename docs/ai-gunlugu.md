@@ -87,3 +87,7 @@
 ## Oturum 22: Özel CSS ve Animasyonların Eklenmesi
 - Hedef: Uygulamanın standart Bootstrap görünümünden kurtarılarak modernleştirilmesi.
 - Karar Süreci: app/static/css/style.css dosyası oluşturuldu; kart hover animasyonları, yumuşak gölgelendirmeler (box-shadow) ve daha okunabilir bir Google Font (Inter) entegre edildi.
+
+## Oturum 23: Karanlık Mod (Dark Mode) Entegrasyonu
+- Hedef: Göz yorgunluğunu azaltmak ve estetik bir deneyim sunmak için Karanlık Mod eklenmesi.
+- Karar Süreci: base.html dosyasına Bootstrap 5'in data-bs-theme özelliğini tetikleyen bir buton ve kullanıcı tercihini localStorage'da saklayan bir JavaScript kodu eklendi.

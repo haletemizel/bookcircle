@@ -33,3 +33,9 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
+
+/* Dark Mode Background Fix */
+[data-bs-theme="dark"] body {
+    background-color: #212529 !important;
+    color: #f8f9fa !important;
+}
