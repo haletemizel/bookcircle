@@ -42,6 +42,9 @@
                             <a class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}" href="{{ url_for('main.index') }}">Kitaplığım</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.explore' %}active{% endif %}" href="{{ url_for('main.explore') }}">Keşfet</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {% if request.endpoint == 'main.add_book' %}active{% endif %}" href="{{ url_for('main.add_book') }}">Kitap Ekle</a>
                         </li>
                         <li class="nav-item">

@@ -138,6 +138,12 @@ def profile():
             
     return render_template('main/profile.html')
 
+@main.route('/explore')
+@login_required
+def explore():
+    books = db.session.scalars(select(Book)).all()
+    return render_template('main/explore.html', books=books)
+
 @main.app_errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404
