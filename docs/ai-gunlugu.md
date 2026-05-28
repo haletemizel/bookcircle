@@ -75,3 +75,7 @@
 ## Oturum 19: Form Veri Doğrulamalarının (Validation) Eklenmesi
 - Hedef: Kullanıcıların sayfa sayılarına eksi (-) değer girmesini engellemek.
 - Karar Süreci: app/main/forms.py dosyasındaki sayısal giriş alanlarına (Integer) WTForms'un NumberRange(min=0) doğrulayıcısı eklendi.
+
+## Oturum 20: Birim Testlerinin (Unit Tests) Eklenmesi
+- Hedef: Veritabanı modellerinin (User ve Book) doğru çalıştığını kanıtlayan otomatik testler yazmak.
+- AI ile Etkileşim ve Karar Süreci: Proje kök dizininde 'tests' klasörü ve içine 'test_models.py' dosyası oluşturuldu. Kullanıcı şifreleme (password hashing) ve kitap ekleme senaryoları için unittest modülü kullanılarak temel test senaryoları yazıldı.
