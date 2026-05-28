@@ -34,7 +34,10 @@ def add_book():
                 title=form.title.data, 
                 author=form.author.data, 
                 total_pages=form.total_pages.data, 
-                genre=form.genre.data
+                genre=form.genre.data,
+                series_name=form.series_name.data,
+                volume_number=form.volume_number.data,
+                image_url=form.image_url.data
             )
             db.session.add(book)
             db.session.commit()

@@ -68,3 +68,10 @@
 - Hedef: Ana sayfadaki standart kitap listesini, kapak resimlerini ve seri bilgilerini içeren modern Bootstrap 5 kartlarına dönüştürmek.
 - AI ile Etkileşim ve Karar Süreci: app/templates/main/index.html şablonu güncellendi. Kitaplar artık kapak resmi (image_url), seri adı/cilt numarası ve okuma ilerlemesini gösteren Bootstrap progress bar içeren şık bir Grid/Card yapısında listeleniyor.
 
+## Oturum 18: Kitap Ekleme Formunun Güncellenmesi
+- Hedef: Veritabanına eklenen 'Kapak Resmi' ve 'Kitap Serileri' özelliklerinin kullanıcı tarafından arayüz üzerinden girilebilmesini sağlamak.
+- AI ile Etkileşim ve Karar Süreci: app/main/forms.py ve app/templates/main/add_book.html güncellenerek series_name, volume_number ve image_url alanları forma dahil edildi. app/main/routes.py dosyasındaki kayıt fonksiyonu bu verileri veritabanına aktaracak şekilde düzenlendi.
+
+## Oturum 19: Form Veri Doğrulamalarının (Validation) Eklenmesi
+- Hedef: Kullanıcıların sayfa sayılarına eksi (-) değer girmesini engellemek.
+- Karar Süreci: app/main/forms.py dosyasındaki sayısal giriş alanlarına (Integer) WTForms'un NumberRange(min=0) doğrulayıcısı eklendi.

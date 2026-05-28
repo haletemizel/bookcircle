@@ -7,6 +7,8 @@ from config import Config
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
+login.login_view = 'auth.login'
+login.login_message = 'Lütfen bu sayfayı görüntülemek için giriş yapın.'
 
 def create_app(config_class=Config):
     app = Flask(__name__)

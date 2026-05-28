@@ -9,65 +9,111 @@
             <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="mb-0 fw-bold">Yeni Kitap Ekle</h3>
-                    <a href="{{ url_for('main.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">Geri Dön</a>
+                    <a href="{{ url_for('main.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">Geri
+                        Dön</a>
                 </div>
                 <p class="text-muted small mt-2">Okumak istediğiniz kitabı kütüphanenize kaydedin.</p>
             </div>
-            
+
             <div class="card-body p-4">
                 <form method="POST" action="">
                     {{ form.hidden_tag() }}
-                    
+
                     <div class="mb-3">
                         {{ form.title.label(class="form-label fw-semibold") }}
-                        {{ form.title(class="form-control bg-light" + (" is-invalid" if form.title.errors else ""), placeholder="Kitabın Adı") }}
+                        {{ form.title(class="form-control bg-light" + (" is-invalid" if form.title.errors else ""),
+                        placeholder="Kitabın Adı") }}
                         {% if form.title.errors %}
-                            <div class="invalid-feedback">
-                                {% for error in form.title.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
+                        <div class="invalid-feedback">
+                            {% for error in form.title.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
                         {% endif %}
                     </div>
-                    
+
                     <div class="mb-3">
                         {{ form.author.label(class="form-label fw-semibold") }}
-                        {{ form.author(class="form-control bg-light" + (" is-invalid" if form.author.errors else ""), placeholder="Yazarın Adı") }}
+                        {{ form.author(class="form-control bg-light" + (" is-invalid" if form.author.errors else ""),
+                        placeholder="Yazarın Adı") }}
                         {% if form.author.errors %}
-                            <div class="invalid-feedback">
-                                {% for error in form.author.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
+                        <div class="invalid-feedback">
+                            {% for error in form.author.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
                         {% endif %}
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             {{ form.total_pages.label(class="form-label fw-semibold") }}
-                            {{ form.total_pages(class="form-control bg-light" + (" is-invalid" if form.total_pages.errors else ""), placeholder="Örn: 350") }}
+                            {{ form.total_pages(class="form-control bg-light" + (" is-invalid" if
+                            form.total_pages.errors else ""), placeholder="Örn: 350") }}
                             {% if form.total_pages.errors %}
-                                <div class="invalid-feedback">
-                                    {% for error in form.total_pages.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
-                                </div>
+                            <div class="invalid-feedback">
+                                {% for error in form.total_pages.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
                             {% endif %}
                         </div>
-                        
-                        <div class="col-md-6 mb-4">
+
+                        <div class="col-md-6 mb-3">
                             {{ form.genre.label(class="form-label fw-semibold") }}
-                            {{ form.genre(class="form-control bg-light" + (" is-invalid" if form.genre.errors else ""), placeholder="Örn: Roman, Bilim Kurgu") }}
+                            {{ form.genre(class="form-control bg-light" + (" is-invalid" if form.genre.errors else ""),
+                            placeholder="Örn: Roman, Bilim Kurgu") }}
                             {% if form.genre.errors %}
-                                <div class="invalid-feedback">
-                                    {% for error in form.genre.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
-                                </div>
+                            <div class="invalid-feedback">
+                                {% for error in form.genre.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
                             {% endif %}
                         </div>
                     </div>
-                    
+
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            {{ form.series_name.label(class="form-label fw-semibold") }}
+                            {{ form.series_name(class="form-control bg-light" + (" is-invalid" if
+                            form.series_name.errors else ""), placeholder="Örn: Yüzüklerin Efendisi") }}
+                            {% if form.series_name.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.series_name.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            {{ form.volume_number.label(class="form-label fw-semibold") }}
+                            {{ form.volume_number(class="form-control bg-light" + (" is-invalid" if
+                            form.volume_number.errors else ""), placeholder="Örn: 1") }}
+                            {% if form.volume_number.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.volume_number.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.image_url.label(class="form-label fw-semibold") }}
+                        {{ form.image_url(class="form-control bg-light" + (" is-invalid" if form.image_url.errors else
+                        ""), placeholder="Örn: https://example.com/cover.jpg") }}
+                        {% if form.image_url.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.image_url.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
                     <div class="d-grid">
                         {{ form.submit(class="btn btn-primary btn-lg fw-bold rounded-3") }}
                     </div>
