@@ -83,3 +83,7 @@
 ## Oturum 21: Proje Vitrini (README) Hazırlığı
 - Hedef: Projenin GitHub üzerindeki vitrini olacak profesyonel bir README.md dosyası hazırlamak.
 - Karar Süreci: Proje amacı, özellikleri, kullanılan teknolojiler ve kurulum adımlarını içeren kapsamlı bir Markdown dokümantasyonu oluşturuldu.
+
+## Oturum 22: Özel CSS ve Animasyonların Eklenmesi
+- Hedef: Uygulamanın standart Bootstrap görünümünden kurtarılarak modernleştirilmesi.
+- Karar Süreci: app/static/css/style.css dosyası oluşturuldu; kart hover animasyonları, yumuşak gölgelendirmeler (box-shadow) ve daha okunabilir bir Google Font (Inter) entegre edildi.
