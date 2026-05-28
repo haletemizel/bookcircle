@@ -79,3 +79,7 @@
 ## Oturum 20: Birim Testlerinin (Unit Tests) Eklenmesi
 - Hedef: Veritabanı modellerinin (User ve Book) doğru çalıştığını kanıtlayan otomatik testler yazmak.
 - AI ile Etkileşim ve Karar Süreci: Proje kök dizininde 'tests' klasörü ve içine 'test_models.py' dosyası oluşturuldu. Kullanıcı şifreleme (password hashing) ve kitap ekleme senaryoları için unittest modülü kullanılarak temel test senaryoları yazıldı.
+
+## Oturum 21: Proje Vitrini (README) Hazırlığı
+- Hedef: Projenin GitHub üzerindeki vitrini olacak profesyonel bir README.md dosyası hazırlamak.
+- Karar Süreci: Proje amacı, özellikleri, kullanılan teknolojiler ve kurulum adımlarını içeren kapsamlı bir Markdown dokümantasyonu oluşturuldu.
