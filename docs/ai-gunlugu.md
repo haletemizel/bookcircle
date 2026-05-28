@@ -91,3 +91,7 @@
 ## Oturum 23: Karanlık Mod (Dark Mode) Entegrasyonu
 - Hedef: Göz yorgunluğunu azaltmak ve estetik bir deneyim sunmak için Karanlık Mod eklenmesi.
 - Karar Süreci: base.html dosyasına Bootstrap 5'in data-bs-theme özelliğini tetikleyen bir buton ve kullanıcı tercihini localStorage'da saklayan bir JavaScript kodu eklendi.
+
+## Oturum 24: Final Sürümü ve Proje Kapanışı
+- Hedef: Projenin tüm gereksinimleri karşıladığını doğrulayıp final sürümünü (v1.0) hazırlamak.
+- Karar Süreci: Tüm hatalar giderildi, arayüz modernleştirildi ve bağımlılıklar requirements.txt dosyasına güncellenerek proje hocaya teslime hazır hale getirildi.
