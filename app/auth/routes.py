@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user
 from sqlalchemy import select
-from app import db
+from app import db, limiter
 from app.auth import auth
 from app.auth.forms import LoginForm, RegistrationForm
 from app.models import User
@@ -22,6 +22,7 @@ def register():
     return render_template('auth/register.html', title='Register', form=form)
 
 @auth.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
