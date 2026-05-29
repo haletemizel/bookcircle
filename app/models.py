@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
 
     reading_progresses: Mapped[List["ReadingProgress"]] = relationship(back_populates="user")
     clubs: Mapped[List["BookClub"]] = relationship(secondary=club_members, back_populates="members")
+    reviews: Mapped[List["Review"]] = relationship(back_populates="user", cascade="all, delete-orphan")
 
     def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)
@@ -64,6 +65,7 @@ class Book(db.Model):
     image_url: Mapped[Optional[str]] = mapped_column(String(255))
 
     reading_progresses: Mapped[List["ReadingProgress"]] = relationship(back_populates="book")
+    reviews: Mapped[List["Review"]] = relationship(back_populates="book", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Book '{self.title}' by {self.author}>"
@@ -106,3 +108,17 @@ class ClubMessage(db.Model):
 
     def __repr__(self):
         return f"<ClubMessage {self.body[:20]}>"
+
+class Review(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    body: Mapped[str] = mapped_column(db.Text)
+    rating: Mapped[int] = mapped_column(db.Integer)
+    timestamp: Mapped[datetime] = mapped_column(default=datetime.utcnow, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    book_id: Mapped[int] = mapped_column(ForeignKey('book.id'))
+
+    user: Mapped["User"] = relationship(back_populates="reviews")
+    book: Mapped["Book"] = relationship(back_populates="reviews")
+
+    def __repr__(self):
+        return f"<Review {self.rating} stars for Book {self.book_id}>"

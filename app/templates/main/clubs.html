@@ -15,6 +15,38 @@
     </div>
 </div>
 
+<h4 class="fw-bold mb-3 mt-4">🔥 Popüler Kulüpler</h4>
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+    {% for club in popular_clubs %}
+    <div class="col">
+        <div class="card h-100 border-0 shadow rounded-4 text-white" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+            <div class="card-body p-4 d-flex flex-column text-center">
+                <h4 class="fw-bold text-truncate mb-2" title="{{ club.name }}">{{ club.name }}</h4>
+                <p class="small opacity-75 mb-3">{{ club.description[:60] }}...</p>
+                <div class="mt-auto">
+                    <div class="badge bg-white text-dark rounded-pill mb-3 px-3 py-2 fs-6">👤 {{ club.members|length }} Üye</div>
+                    <div>
+                    {% if current_user in club.members %}
+                        <a href="{{ url_for('main.club_room', club_id=club.id) }}" class="btn btn-dark rounded-pill px-4 fw-semibold w-100">Odaya Git</a>
+                    {% else %}
+                        <form action="{{ url_for('main.join_club', club_id=club.id) }}" method="POST">
+                            <button type="submit" class="btn btn-outline-dark bg-white rounded-pill px-4 fw-semibold w-100">Katıl</button>
+                        </form>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center py-4">
+        <p class="text-muted fst-italic">Şu anda sistemde hiç kulüp yok. Yeni bir kulüp kurarak popüler olma şansını yakalayın!</p>
+    </div>
+    {% endfor %}
+</div>
+<hr class="mb-5 opacity-25">
+
+<h4 class="fw-bold mb-3">Tüm Kulüpler</h4>
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     {% for club in clubs %}
     <div class="col">

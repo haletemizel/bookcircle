@@ -3,11 +3,11 @@ import secrets
 from werkzeug.utils import secure_filename
 from flask import render_template, redirect, url_for, flash, request, current_app, jsonify, session
 from flask_login import login_required, current_user
-from sqlalchemy import select
+from sqlalchemy import select, func
 from app import db
 from app.main import main
-from app.models import Book, ReadingProgress, User, BookClub, ClubMessage
-from app.main.forms import BookForm, UpdateProfileForm, CreateClubForm, ClubMessageForm
+from app.models import Book, ReadingProgress, User, BookClub, ClubMessage, Review
+from app.main.forms import BookForm, UpdateProfileForm, CreateClubForm, ClubMessageForm, ReviewForm
 
 @main.route('/set_language/<lang>')
 def set_language(lang):
@@ -221,7 +221,19 @@ def search():
 @login_required
 def explore():
     books = db.session.scalars(select(Book)).all()
-    return render_template('main/explore.html', books=books)
+    
+    # Haftanın Kitabı (En yüksek puanlı veya rastgele 1 kitap)
+    featured_book = db.session.scalar(
+        select(Book)
+        .outerjoin(Review)
+        .group_by(Book.id)
+        .order_by(func.avg(Review.rating).desc())
+        .limit(1)
+    )
+    if not featured_book:
+        featured_book = db.session.scalar(select(Book).order_by(func.random()).limit(1))
+        
+    return render_template('main/explore.html', books=books, featured_book=featured_book)
 
 @main.app_errorhandler(404)
 def not_found_error(error):
@@ -266,7 +278,8 @@ def clubs():
             flash('Bu kulüp adı zaten kullanılıyor olabilir.', 'danger')
     
     all_clubs = db.session.scalars(select(BookClub).order_by(BookClub.created_at.desc())).all()
-    return render_template('main/clubs.html', clubs=all_clubs, form=form)
+    popular_clubs = sorted(all_clubs, key=lambda c: len(c.members), reverse=True)[:3]
+    return render_template('main/clubs.html', clubs=all_clubs, popular_clubs=popular_clubs, form=form)
 
 @main.route('/join_club/<int:club_id>', methods=['POST'])
 @login_required
@@ -306,3 +319,31 @@ def club_room(club_id):
     ).all()
     
     return render_template('main/club_room.html', club=club, messages=messages, form=form)
+
+@main.route('/book/<int:book_id>', methods=['GET', 'POST'])
+@login_required
+def book_detail(book_id):
+    book = db.session.get(Book, book_id)
+    if not book:
+        flash('Kitap bulunamadı.', 'danger')
+        return redirect(url_for('main.explore'))
+        
+    form = ReviewForm()
+    if form.validate_on_submit():
+        existing = db.session.scalar(select(Review).where((Review.book_id == book.id) & (Review.user_id == current_user.id)))
+        if existing:
+            existing.rating = form.rating.data
+            existing.body = form.body.data
+            flash('Yorumunuz başarıyla güncellendi.', 'success')
+        else:
+            review = Review(rating=form.rating.data, body=form.body.data, user_id=current_user.id, book_id=book.id)
+            db.session.add(review)
+            flash('Değerlendirmeniz başarıyla eklendi.', 'success')
+        db.session.commit()
+        return redirect(url_for('main.book_detail', book_id=book.id))
+        
+    reviews = db.session.scalars(select(Review).where(Review.book_id == book.id).order_by(Review.timestamp.desc())).all()
+    avg_rating = db.session.scalar(select(func.avg(Review.rating)).where(Review.book_id == book.id))
+    avg_rating = round(avg_rating, 1) if avg_rating else None
+    
+    return render_template('main/book_detail.html', book=book, reviews=reviews, avg_rating=avg_rating, form=form)

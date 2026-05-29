@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }} - BookCircle{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Kitap Özeti (Sol) -->
+    <div class="col-lg-4 mb-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden text-center">
+            {% if book.image_url %}
+            <div style="height: 350px; background-color: #f8f9fa;" class="d-flex align-items-center justify-content-center border-bottom">
+                <img src="{{ book.image_url }}" class="img-fluid" alt="{{ book.title }} Kapak" style="object-fit: cover; width: 100%; height: 100%;">
+            </div>
+            {% else %}
+            <div style="height: 350px; background-color: #e9ecef;" class="d-flex align-items-center justify-content-center text-muted border-bottom">
+                <div>
+                    <i class="bi bi-book display-1 opacity-50 mb-3"></i>
+                    <div class="fw-semibold opacity-75">Kapak Görseli Yok</div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="card-body p-4">
+                <h3 class="fw-bold mb-1">{{ book.title }}</h3>
+                <h5 class="text-muted mb-4">{{ book.author }}</h5>
+                
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <h2 class="fw-bold mb-0 me-2">{{ avg_rating or '-' }}</h2>
+                    <div class="text-warning fs-5">
+                        {% set rating = avg_rating|round(0, 'floor')|int if avg_rating else 0 %}
+                        {% for i in range(5) %}
+                            {% if i < rating %}⭐{% else %}☆{% endif %}
+                        {% endfor %}
+                    </div>
+                    <span class="text-muted ms-2 small">({{ reviews|length }} Değerlendirme)</span>
+                </div>
+                
+                {% if book.genre %}
+                <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill mb-2">{{ book.genre }}</span>
+                {% endif %}
+                
+                {% if book.series_name %}
+                <div class="mt-2">
+                    <span class="badge bg-secondary opacity-75 rounded-pill px-3 py-2">
+                        {{ book.series_name }} {% if book.volume_number %} - {{ book.volume_number }}. Cilt{% endif %}
+                    </span>
+                </div>
+                {% endif %}
+                
+                <div class="mt-4 text-muted small">
+                    <strong>Sayfa Sayısı:</strong> {{ book.total_pages }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Yorumlar ve Form (Sağ) -->
+    <div class="col-lg-8">
+        <!-- Yorum Formu -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-header bg-white border-0 p-4 pb-0">
+                <h5 class="fw-bold mb-0">✍️ Değerlendirme Yap</h5>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('main.book_detail', book_id=book.id) }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            {{ form.rating.label(class="form-label fw-semibold d-block") }}
+                            <!-- Hidden Select -->
+                            <div class="d-none">
+                                {{ form.rating(id="ratingSelect") }}
+                            </div>
+                            
+                            <!-- Interactive Stars -->
+                            <div class="star-rating fs-2 mb-2" id="starRatingContainer" style="user-select: none;">
+                                <span class="star" data-value="1">☆</span>
+                                <span class="star" data-value="2">☆</span>
+                                <span class="star" data-value="3">☆</span>
+                                <span class="star" data-value="4">☆</span>
+                                <span class="star" data-value="5">☆</span>
+                            </div>
+                            
+                            {% if form.rating.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.rating.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            {{ form.body.label(class="form-label fw-semibold") }}
+                            {{ form.body(class="form-control bg-light" + (" is-invalid" if form.body.errors else ""), rows="3", placeholder="Bu kitap hakkındaki düşünceleriniz neler?") }}
+                            {% if form.body.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.body.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        {{ form.submit(class="btn btn-primary rounded-pill px-5 fw-semibold") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Yorum Listesi -->
+        <h5 class="fw-bold mb-3 mt-5">Yorumlar ({{ reviews|length }})</h5>
+        {% for review in reviews %}
+        <div class="card border-0 shadow-sm rounded-4 mb-3">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='img/avatars/' + review.user.avatar_file) }}" alt="Avatar" class="rounded-circle me-3 border shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+                        <div>
+                            <h6 class="fw-bold mb-0">{{ review.user.username }}</h6>
+                            <small class="text-muted">{{ review.timestamp.strftime('%d.%m.%Y %H:%M') }}</small>
+                        </div>
+                    </div>
+                    <div class="text-warning fs-6">
+                        {% for i in range(5) %}
+                            {% if i < review.rating %}⭐{% else %}☆{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="mb-0 text-break">{{ review.body }}</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-5">
+            <p>Bu kitap için henüz yorum yapılmamış.</p>
+            <p>İlk değerlendirmeyi siz yapın!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .star-rating .star {
+        cursor: pointer;
+        color: #adb5bd;
+        transition: color 0.2s, transform 0.1s;
+        display: inline-block;
+    }
+    .star-rating .star:hover {
+        transform: scale(1.1);
+    }
+    .star-rating .star.hovered {
+        color: #ffc107;
+    }
+    .star-rating .star.selected {
+        color: #ffc107;
+    }
+    [data-bs-theme="dark"] .star-rating .star {
+        color: #495057;
+    }
+    [data-bs-theme="dark"] .star-rating .star.hovered,
+    [data-bs-theme="dark"] .star-rating .star.selected {
+        color: #f39c12;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const stars = document.querySelectorAll('#starRatingContainer .star');
+        const ratingSelect = document.getElementById('ratingSelect');
+        
+        // Initial setup based on current value (if any)
+        let currentVal = ratingSelect.value;
+        if(currentVal) updateStars(currentVal);
+        
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() {
+                const val = this.getAttribute('data-value');
+                stars.forEach(s => {
+                    if (s.getAttribute('data-value') <= val) {
+                        s.classList.add('hovered');
+                        s.textContent = '⭐';
+                    } else {
+                        s.classList.remove('hovered');
+                        s.textContent = '☆';
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseout', function() {
+                stars.forEach(s => {
+                    s.classList.remove('hovered');
+                });
+                updateStars(ratingSelect.value);
+            });
+            
+            star.addEventListener('click', function() {
+                const val = this.getAttribute('data-value');
+                ratingSelect.value = val;
+                updateStars(val);
+            });
+        });
+        
+        function updateStars(val) {
+            stars.forEach(s => {
+                if (val && s.getAttribute('data-value') <= val) {
+                    s.classList.add('selected');
+                    s.textContent = '⭐';
+                } else {
+                    s.classList.remove('selected');
+                    s.textContent = '☆';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

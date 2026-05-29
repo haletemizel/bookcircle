@@ -123,3 +123,7 @@
 ## Oturum 32: Dijital Kitap Kulübü Modülü
 - Hedef: Kullanıcıların sosyalleşebileceği ve tartışabileceği kitap kulüpleri özelliğini eklemek.
 - Karar Süreci: "ClubMessage" modeli oluşturularak BookClub'a bağlandı. "clubs.html" ile kulüplerin listelendiği ve yeni kulüp kurulan sayfa, "club_room.html" ile de modern bir sohbet (chat) kutusu barındıran kulüp odası tasarlandı. Veritabanı göçü yapıldı.
+
+## Oturum 33: Sosyal Etkileşim ve Dinamik Arayüz (Yorumlar, Derecelendirme, Öne Çıkanlar)
+- Hedef: Projeyi gerçek bir sosyal ağa dönüştürecek büyük final özelliklerinin entegrasyonu.
+- Karar Süreci: Kitapları puanlamak için "Review" modeli ve formu oluşturuldu. "explore.html" sayfasının en üstüne Haftanın Kitabı (Featured Book) banner'ı, "clubs.html" sayfasına "Popüler Kulüpler" bölümü eklendi. "book_detail.html" isimli yeni sayfada kullanıcı yorumlarının ve 5 yıldızlı grafiklerin sergilendiği bir değerlendirme alanı tasarlandı. Veritabanı güncellendi.

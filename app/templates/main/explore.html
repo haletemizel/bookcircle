@@ -10,6 +10,35 @@
     </div>
 </div>
 
+{% if featured_book %}
+<!-- Haftanın Kitabı (Hero Banner) -->
+<div class="card border-0 shadow-lg rounded-4 mb-5 overflow-hidden bg-dark text-white position-relative">
+    <div class="position-absolute w-100 h-100" style="background: linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%); z-index: 1;"></div>
+    <div class="row g-0 position-relative" style="z-index: 2;">
+        <div class="col-md-4 d-flex align-items-center justify-content-center p-4">
+            {% if featured_book.image_url %}
+                <img src="{{ featured_book.image_url }}" class="img-fluid rounded-3 shadow" alt="{{ featured_book.title }}" style="max-height: 300px; object-fit: cover;">
+            {% else %}
+                <div class="bg-light text-muted d-flex align-items-center justify-content-center rounded-3 shadow w-100" style="height: 300px;">
+                    <i class="bi bi-book display-1 opacity-50"></i>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8 d-flex align-items-center">
+            <div class="card-body p-4 p-md-5">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3 fw-bold fs-6">🌟 Haftanın Kitabı</span>
+                <h2 class="card-title fw-bold display-5 mb-2">{{ featured_book.title }}</h2>
+                <h4 class="card-subtitle text-light opacity-75 mb-4">{{ featured_book.author }}</h4>
+                <p class="card-text opacity-75 mb-4 d-none d-md-block">Bu hafta topluluğumuzun en çok ilgisini çeken, yıldızları parlayan eser! Türü: {{ featured_book.genre or 'Belirtilmemiş' }}</p>
+                <a href="{{ url_for('main.book_detail', book_id=featured_book.id) }}" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-dark shadow-sm">
+                    Hemen İncele
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% if not books %}
 <div class="card border-0 shadow-sm rounded-4 text-center py-5">
     <div class="card-body">
@@ -65,7 +94,7 @@
                 {% endif %}
                 
                 <div class="mt-auto pt-3 text-center">
-                    <small class="text-muted">{{ book.total_pages }} sayfa</small>
+                    <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-outline-dark btn-sm rounded-pill w-100 fw-semibold">Detayları Gör</a>
                 </div>
             </div>
         </div>

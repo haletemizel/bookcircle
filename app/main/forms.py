@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, IntegerField, SubmitField
+from wtforms import StringField, IntegerField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, NumberRange, Optional, Length
 
 class BookForm(FlaskForm):
@@ -26,3 +26,8 @@ class CreateClubForm(FlaskForm):
 class ClubMessageForm(FlaskForm):
     body = StringField('Mesajınız', validators=[DataRequired(), Length(min=1, max=1000)])
     submit = SubmitField('Gönder')
+
+class ReviewForm(FlaskForm):
+    rating = SelectField('Puanınız', choices=[(5, '5 Yıldız'), (4, '4 Yıldız'), (3, '3 Yıldız'), (2, '2 Yıldız'), (1, '1 Yıldız')], coerce=int, validators=[DataRequired()])
+    body = TextAreaField('Yorumunuz', validators=[DataRequired(), Length(min=10, max=1000)])
+    submit = SubmitField('Değerlendir')
