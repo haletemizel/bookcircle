@@ -39,3 +39,12 @@ body {
     background-color: #212529 !important;
     color: #f8f9fa !important;
 }
+
+/* Standart Kitap Kapağı Boyutu */
+.book-cover {
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+    border-top-left-radius: var(--bs-border-radius);
+    border-top-right-radius: var(--bs-border-radius);
+}

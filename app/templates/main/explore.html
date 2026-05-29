@@ -53,7 +53,7 @@
             <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover overflow-hidden position-relative">
                 {% if book.image_url %}
                 <div style="height: 200px; background-color: #f8f9fa;">
-                    <img src="{{ book.image_url }}" class="card-img-top w-100 h-100" alt="{{ book.title }} Kapak" style="object-fit: cover;">
+                    <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }} Kapak" style="height: 200px; width: 100%; object-fit: cover; border-radius: inherit;">
                 </div>
                 {% else %}
                 <div style="height: 200px; background-color: #e9ecef;" class="d-flex align-items-center justify-content-center text-muted">
@@ -94,10 +94,9 @@
     {% for book in books %}
     <div class="col">
         <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover overflow-hidden">
-            <!-- Kapak Resmi (Image URL) -->
             {% if book.image_url %}
             <div style="height: 250px; overflow: hidden; background-color: #f8f9fa;" class="d-flex align-items-center justify-content-center">
-                <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }} Kapak" style="object-fit: cover; width: 100%; height: 100%;">
+                <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }} Kapak" style="height: 250px; width: 100%; object-fit: cover; border-radius: inherit;">
             </div>
             {% else %}
             <div style="height: 250px; background-color: #e9ecef;" class="d-flex align-items-center justify-content-center text-muted">
