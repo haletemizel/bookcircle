@@ -115,3 +115,7 @@
 ## Oturum 30: E-posta ile Şifre Sıfırlama Akışı (Bonus Puan)
 - Hedef: Kullanıcıların unuttukları şifrelerini güvenli token altyapısıyla sıfırlayabilmesi.
 - Karar Süreci: itsdangerous kütüphanesi ile URLSafeTimedSerializer kullanılarak güvenli token üretimi sağlandı. E-posta simülasyonu yapılarak şifre sıfırlama linki arka plan terminaline yazdırıldı. Modern şifre sıfırlama ekranları tasarlanıp login sayfasına bağlandı.
+
+## Oturum 31: İki Dilli Arayüz (Bilingual) Entegrasyonu (+3 Puan)
+- Hedef: Uygulamanın TR ve EN dillerini destekleyecek altyapıya kavuşması.
+- Karar Süreci: Flask-Babel entegrasyonu sağlandı. Pratiklik adına 'routes.py' içinde bir 'context_processor' (sözlük) kullanılarak Navbar ve ana sayfadaki temel metinlerin seçilen dile (session tabanlı) göre anında çevrilmesi (simülasyon) sağlandı.

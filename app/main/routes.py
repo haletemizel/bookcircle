@@ -1,13 +1,64 @@
 import os
 import secrets
 from werkzeug.utils import secure_filename
-from flask import render_template, redirect, url_for, flash, request, current_app, jsonify
+from flask import render_template, redirect, url_for, flash, request, current_app, jsonify, session
 from flask_login import login_required, current_user
 from sqlalchemy import select
 from app import db
 from app.main import main
 from app.main.forms import BookForm, UpdateProfileForm
 from app.models import Book, ReadingProgress, User
+
+@main.route('/set_language/<lang>')
+def set_language(lang):
+    if lang in ['tr', 'en']:
+        session['lang'] = lang
+    return redirect(request.referrer or url_for('main.index'))
+
+@main.app_context_processor
+def inject_dict():
+    translations = {
+        'tr': {
+            'explore': 'Keşfet',
+            'my_library': 'Kitaplığım',
+            'add_book': 'Kitap Ekle',
+            'profile': 'Profilim',
+            'logout': 'Çıkış Yap',
+            'login': 'Giriş Yap',
+            'register': 'Kayıt Ol',
+            'search_placeholder': 'Kitap veya yazar ara...',
+            'search_btn': 'Ara',
+            'welcome': 'BookCircle\'a Hoş Geldiniz! 📚',
+            'hero_desc': 'Kişisel kütüphanenizi dijitalleştirin, okuma hedeflerinizi takip edin ve yeni kitaplar keşfedin.',
+            'hero_start': 'Hemen Başla',
+            'hero_library': 'Kitaplığına Git',
+            'my_books': 'Kitaplarım',
+            'no_books': 'Kitaplığınızda henüz kitap yok.',
+            'no_books_sub': 'Okuduğunuz veya okumak istediğiniz kitapları eklemeye başlayın.',
+            'add_first_book': 'İlk Kitabı Ekle'
+        },
+        'en': {
+            'explore': 'Explore',
+            'my_library': 'My Library',
+            'add_book': 'Add Book',
+            'profile': 'My Profile',
+            'logout': 'Log Out',
+            'login': 'Log In',
+            'register': 'Register',
+            'search_placeholder': 'Search books or authors...',
+            'search_btn': 'Search',
+            'welcome': 'Welcome to BookCircle! 📚',
+            'hero_desc': 'Digitize your personal library, track your reading goals, and discover new books.',
+            'hero_start': 'Get Started',
+            'hero_library': 'Go to Library',
+            'my_books': 'My Books',
+            'no_books': 'No books in your library yet.',
+            'no_books_sub': 'Start adding books you have read or want to read.',
+            'add_first_book': 'Add First Book'
+        }
+    }
+    lang = session.get('lang', 'tr')
+    return dict(t=translations.get(lang, translations['tr']), current_lang=lang)
 
 @main.route('/')
 @login_required

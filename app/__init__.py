@@ -4,7 +4,12 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_babel import Babel
 from config import Config
+
+def get_locale():
+    from flask import session
+    return session.get('lang', 'tr')
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -12,6 +17,7 @@ login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = 'Lütfen bu sayfayı görüntülemek için giriş yapın.'
 limiter = Limiter(key_func=get_remote_address)
+babel = Babel()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -21,6 +27,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login.init_app(app)
     limiter.init_app(app)
+    babel.init_app(app, locale_selector=get_locale)
 
     # Blueprint kayıtları
     from app.main import main as main_bp
