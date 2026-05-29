@@ -38,9 +38,14 @@
                         {% endif %}
                     </div>
                     
-                    <div class="mb-4 form-check">
-                        {{ form.remember_me(class="form-check-input") }}
-                        {{ form.remember_me.label(class="form-check-label text-muted") }}
+                    <div class="mb-4 form-check d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ form.remember_me(class="form-check-input") }}
+                            {{ form.remember_me.label(class="form-check-label text-muted") }}
+                        </div>
+                        <div>
+                            <a href="{{ url_for('auth.reset_password_request') }}" class="text-decoration-none small fw-semibold">Şifremi Unuttum?</a>
+                        </div>
                     </div>
                     
                     <div class="d-grid gap-2">

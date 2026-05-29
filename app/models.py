@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
+from itsdangerous import URLSafeTimedSerializer as Serializer
+from flask import current_app
 
 from app import db, login
 
@@ -34,6 +36,19 @@ class User(UserMixin, db.Model):
         if not self.password_hash:
             return False
         return check_password_hash(self.password_hash, password)
+
+    def get_reset_password_token(self):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
+
+    @staticmethod
+    def verify_reset_password_token(token, expires_sec=1800):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token, max_age=expires_sec)['user_id']
+        except Exception:
+            return None
+        return db.session.get(User, user_id)
 
     def __repr__(self):
         return f"<User {self.username}>"

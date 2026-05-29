@@ -111,3 +111,7 @@
 ## Oturum 29: Tam Metin Arama Özelliği (Bonus Puan)
 - Hedef: Kullanıcıların kitap adı veya yazar adıyla sistemde kitap araması yapabilmesini sağlamak.
 - Karar Süreci: Navbar'a bir arama çubuğu entegre edildi. SQLAlchemy 'ilike' kullanılarak case-insensitive eşleşme sağlayan '/search' rotası ve sonuçları listeleyen şık 'search_results.html' sayfası eklendi.
+
+## Oturum 30: E-posta ile Şifre Sıfırlama Akışı (Bonus Puan)
+- Hedef: Kullanıcıların unuttukları şifrelerini güvenli token altyapısıyla sıfırlayabilmesi.
+- Karar Süreci: itsdangerous kütüphanesi ile URLSafeTimedSerializer kullanılarak güvenli token üretimi sağlandı. E-posta simülasyonu yapılarak şifre sıfırlama linki arka plan terminaline yazdırıldı. Modern şifre sıfırlama ekranları tasarlanıp login sayfasına bağlandı.

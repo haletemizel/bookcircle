@@ -27,3 +27,12 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('E-posta Adresi', validators=[DataRequired(), Email()])
+    submit = SubmitField('Şifre Sıfırlama Bağlantısı Gönder')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Yeni Şifre', validators=[DataRequired()])
+    password_confirm = PasswordField('Yeni Şifre (Tekrar)', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Şifreyi Sıfırla')
