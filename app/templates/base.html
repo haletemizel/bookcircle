@@ -42,6 +42,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}">Çıkış Yap</a>
                         </li>
+                        <li class="nav-item ms-lg-3 d-flex align-items-center mt-2 mt-lg-0">
+                            <form action="{{ url_for('main.search') }}" method="GET" class="d-flex w-100">
+                                <input class="form-control form-control-sm rounded-pill me-2 border-0" type="search" name="q" placeholder="Kitap veya yazar ara..." aria-label="Arama" value="{{ request.args.get('q', '') }}">
+                                <button class="btn btn-sm btn-light rounded-pill px-3 fw-semibold text-dark" type="submit">Ara</button>
+                            </form>
+                        </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link {% if request.endpoint == 'auth.login' %}active{% endif %}" href="{{ url_for('auth.login') }}">Giriş Yap</a>

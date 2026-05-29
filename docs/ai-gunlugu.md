@@ -107,3 +107,7 @@
 ## Oturum 28: RESTful API Endpoint Eklenmesi (Bonus Puan)
 - Hedef: Uygulamanın dışa veri sunabilmesi için bir API köprüsü kurulması.
 - Karar Süreci: app/main/routes.py dosyasına /api/v1/books rotası eklendi. Veritabanındaki tüm kitaplar çekilerek jsonify kütüphanesi yardımıyla dış sistemlerin (mobil uygulama vb.) tüketebileceği bir JSON formatına dönüştürüldü.
+
+## Oturum 29: Tam Metin Arama Özelliği (Bonus Puan)
+- Hedef: Kullanıcıların kitap adı veya yazar adıyla sistemde kitap araması yapabilmesini sağlamak.
+- Karar Süreci: Navbar'a bir arama çubuğu entegre edildi. SQLAlchemy 'ilike' kullanılarak case-insensitive eşleşme sağlayan '/search' rotası ve sonuçları listeleyen şık 'search_results.html' sayfası eklendi.

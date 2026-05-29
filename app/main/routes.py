@@ -148,6 +148,22 @@ def profile():
     image_file = url_for('static', filename='img/avatars/' + current_user.avatar_file)
     return render_template('main/profile.html', form=form, image_file=image_file)
 
+@main.route('/search')
+@login_required
+def search():
+    q = request.args.get('q', '')
+    if not q:
+        return redirect(url_for('main.index'))
+    
+    # Kitap Adı veya Yazar alanında büyük/küçük harf duyarsız arama
+    books = db.session.scalars(
+        select(Book).where(
+            (Book.title.ilike(f'%{q}%')) | (Book.author.ilike(f'%{q}%'))
+        )
+    ).all()
+    
+    return render_template('main/search_results.html', books=books, query=q)
+
 @main.route('/explore')
 @login_required
 def explore():
