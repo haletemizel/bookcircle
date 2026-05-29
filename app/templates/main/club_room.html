@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}{{ club.name }} - BookCircle{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Club Info Sidebar -->
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-3">{{ club.name }}</h4>
+                <p class="text-muted">{{ club.description }}</p>
+                <hr>
+                <h6 class="fw-bold mb-3">Üyeler ({{ club.members|length }})</h6>
+                <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                    {% for member in club.members %}
+                    <li class="list-group-item bg-transparent px-0 d-flex align-items-center border-0 py-2">
+                        <img src="{{ url_for('static', filename='img/avatars/' + member.avatar_file) }}" alt="Avatar" class="rounded-circle me-3 border shadow-sm" style="width: 36px; height: 36px; object-fit: cover;">
+                        <span class="fw-semibold">{{ member.username }}</span>
+                        {% if member.id == club.creator_id %}
+                            <span class="badge bg-warning text-dark ms-auto rounded-pill" style="font-size: 0.65rem;">Kurucu</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chat Room -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 h-100 d-flex flex-column">
+            <div class="card-header bg-white border-0 p-4 pb-0">
+                <h5 class="fw-bold mb-0">💬 Sohbet Odası</h5>
+            </div>
+            
+            <div class="card-body p-4 d-flex flex-column" style="height: 550px;">
+                <!-- Messages Area -->
+                <div class="flex-grow-1 overflow-auto mb-4 pe-3" id="chatContainer">
+                    {% for message in messages %}
+                    <div class="d-flex mb-3 {% if message.user_id == current_user.id %}justify-content-end{% endif %}">
+                        {% if message.user_id != current_user.id %}
+                        <img src="{{ url_for('static', filename='img/avatars/' + message.user.avatar_file) }}" alt="Avatar" class="rounded-circle me-2 align-self-end border shadow-sm" style="width: 32px; height: 32px; object-fit: cover;">
+                        {% endif %}
+                        
+                        <div class="p-3 rounded-4 shadow-sm {% if message.user_id == current_user.id %}bg-primary text-white text-end rounded-bottom-end-0{% else %}bg-light rounded-bottom-start-0{% endif %}" style="max-width: 75%;">
+                            {% if message.user_id != current_user.id %}
+                            <div class="small fw-bold mb-1 opacity-75">{{ message.user.username }}</div>
+                            {% endif %}
+                            <div class="text-break">{{ message.body }}</div>
+                            <div class="small mt-1 opacity-50" style="font-size: 0.7rem;">{{ message.timestamp.strftime('%H:%M') }}</div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center text-muted h-100 d-flex align-items-center justify-content-center">
+                        <div>
+                            <p class="mb-1">Henüz mesaj yok.</p>
+                            <small>İlk mesajı siz gönderin!</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Input Area -->
+                <div class="mt-auto pt-3 border-top">
+                    <form action="{{ url_for('main.club_room', club_id=club.id) }}" method="POST" class="d-flex gap-2">
+                        {{ form.hidden_tag() }}
+                        {{ form.body(class="form-control form-control-lg rounded-pill bg-light border-0 px-4", placeholder="Mesajınızı yazın...", autocomplete="off", required=True) }}
+                        <button type="submit" class="btn btn-dark rounded-pill px-4 fw-semibold d-flex align-items-center">
+                            Gönder
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill ms-2" viewBox="0 0 16 16">
+                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Scrollbar Styling for Chat */
+    #chatContainer::-webkit-scrollbar {
+        width: 6px;
+    }
+    #chatContainer::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    #chatContainer::-webkit-scrollbar-thumb {
+        background: #dee2e6;
+        border-radius: 10px;
+    }
+    [data-bs-theme="dark"] #chatContainer::-webkit-scrollbar-thumb {
+        background: #495057;
+    }
+</style>
+
+<script>
+    // Scroll to bottom of chat container
+    document.addEventListener("DOMContentLoaded", function() {
+        var chatContainer = document.getElementById("chatContainer");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
+</script>
+{% endblock %}

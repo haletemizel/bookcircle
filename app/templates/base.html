@@ -34,6 +34,9 @@
                             <a class="nav-link {% if request.endpoint == 'main.explore' %}active{% endif %}" href="{{ url_for('main.explore') }}">{{ t.explore }}</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'main.clubs' %}active{% endif %}" href="{{ url_for('main.clubs') }}">{{ t.clubs }}</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {% if request.endpoint == 'main.add_book' %}active{% endif %}" href="{{ url_for('main.add_book') }}">{{ t.add_book }}</a>
                         </li>
                         <li class="nav-item">

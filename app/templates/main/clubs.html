@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Kulüpler - BookCircle{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2 class="fw-bold mb-0">👥 Kitap Kulüpleri</h2>
+        <p class="text-muted">Topluluğa katılın, kitapları tartışın ve yeni insanlarla tanışın.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <button type="button" class="btn btn-primary rounded-pill px-4 fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#createClubModal">
+            + Yeni Kulüp Kur
+        </button>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    {% for club in clubs %}
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover">
+            <div class="card-body p-4 d-flex flex-column">
+                <h5 class="card-title fw-bold text-truncate" title="{{ club.name }}">{{ club.name }}</h5>
+                <p class="card-text text-muted small mb-4" style="flex-grow: 1;">{{ club.description[:100] }}{% if club.description|length > 100 %}...{% endif %}</p>
+                <div class="d-flex justify-content-between align-items-center mt-auto">
+                    <span class="badge bg-light text-dark border">👤 {{ club.members|length }} Üye</span>
+                    {% if current_user in club.members %}
+                        <a href="{{ url_for('main.club_room', club_id=club.id) }}" class="btn btn-sm btn-dark rounded-pill px-3 fw-semibold">Odaya Git</a>
+                    {% else %}
+                        <form action="{{ url_for('main.join_club', club_id=club.id) }}" method="POST">
+                            <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">Katıl</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center py-5">
+        <p class="text-muted">Henüz hiç kitap kulübü kurulmamış. İlk kuran sen ol!</p>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Create Club Modal -->
+<div class="modal fade" id="createClubModal" tabindex="-1" aria-labelledby="createClubModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
+                <h5 class="modal-title fw-bold" id="createClubModalLabel">Yeni Kulüp Oluştur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form action="{{ url_for('main.clubs') }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.name.label(class="form-label fw-semibold") }}
+                        {{ form.name(class="form-control form-control-lg bg-light" + (" is-invalid" if form.name.errors else ""), placeholder="Kulüp Adı") }}
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        {{ form.description.label(class="form-label fw-semibold") }}
+                        {{ form.description(class="form-control bg-light", rows="3", placeholder="Kulüp hakkında kısa bir açıklama") }}
+                    </div>
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary btn-lg rounded-pill fw-semibold") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .transition-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .transition-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+</style>
+{% endblock %}

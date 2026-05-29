@@ -6,8 +6,8 @@ from flask_login import login_required, current_user
 from sqlalchemy import select
 from app import db
 from app.main import main
-from app.main.forms import BookForm, UpdateProfileForm
-from app.models import Book, ReadingProgress, User
+from app.models import Book, ReadingProgress, User, BookClub, ClubMessage
+from app.main.forms import BookForm, UpdateProfileForm, CreateClubForm, ClubMessageForm
 
 @main.route('/set_language/<lang>')
 def set_language(lang):
@@ -35,7 +35,8 @@ def inject_dict():
             'my_books': 'Kitaplarım',
             'no_books': 'Kitaplığınızda henüz kitap yok.',
             'no_books_sub': 'Okuduğunuz veya okumak istediğiniz kitapları eklemeye başlayın.',
-            'add_first_book': 'İlk Kitabı Ekle'
+            'add_first_book': 'İlk Kitabı Ekle',
+            'clubs': 'Kulüpler'
         },
         'en': {
             'explore': 'Explore',
@@ -54,7 +55,8 @@ def inject_dict():
             'my_books': 'My Books',
             'no_books': 'No books in your library yet.',
             'no_books_sub': 'Start adding books you have read or want to read.',
-            'add_first_book': 'Add First Book'
+            'add_first_book': 'Add First Book',
+            'clubs': 'Clubs'
         }
     }
     lang = session.get('lang', 'tr')
@@ -246,3 +248,61 @@ def api_get_books():
             'image_url': book.image_url
         })
     return jsonify({'books': books_list, 'count': len(books_list)})
+
+@main.route('/clubs', methods=['GET', 'POST'])
+@login_required
+def clubs():
+    form = CreateClubForm()
+    if form.validate_on_submit():
+        club = BookClub(name=form.name.data, description=form.description.data, creator_id=current_user.id)
+        club.members.append(current_user)
+        db.session.add(club)
+        try:
+            db.session.commit()
+            flash('Yeni kitap kulübü başarıyla oluşturuldu!', 'success')
+            return redirect(url_for('main.clubs'))
+        except Exception:
+            db.session.rollback()
+            flash('Bu kulüp adı zaten kullanılıyor olabilir.', 'danger')
+    
+    all_clubs = db.session.scalars(select(BookClub).order_by(BookClub.created_at.desc())).all()
+    return render_template('main/clubs.html', clubs=all_clubs, form=form)
+
+@main.route('/join_club/<int:club_id>', methods=['POST'])
+@login_required
+def join_club(club_id):
+    club = db.session.get(BookClub, club_id)
+    if not club:
+        flash('Kulüp bulunamadı.', 'danger')
+        return redirect(url_for('main.clubs'))
+    
+    if current_user not in club.members:
+        club.members.append(current_user)
+        db.session.commit()
+        flash(f'{club.name} kulübüne katıldınız!', 'success')
+    return redirect(url_for('main.club_room', club_id=club.id))
+
+@main.route('/club/<int:club_id>', methods=['GET', 'POST'])
+@login_required
+def club_room(club_id):
+    club = db.session.get(BookClub, club_id)
+    if not club:
+        flash('Kulüp bulunamadı.', 'danger')
+        return redirect(url_for('main.clubs'))
+        
+    if current_user not in club.members:
+        flash('Bu kulübün odasına girmek için önce katılmalısınız.', 'warning')
+        return redirect(url_for('main.clubs'))
+
+    form = ClubMessageForm()
+    if form.validate_on_submit():
+        msg = ClubMessage(body=form.body.data, user_id=current_user.id, club_id=club.id)
+        db.session.add(msg)
+        db.session.commit()
+        return redirect(url_for('main.club_room', club_id=club.id))
+        
+    messages = db.session.scalars(
+        select(ClubMessage).where(ClubMessage.club_id == club.id).order_by(ClubMessage.timestamp)
+    ).all()
+    
+    return render_template('main/club_room.html', club=club, messages=messages, form=form)

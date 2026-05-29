@@ -89,6 +89,20 @@ class BookClub(db.Model):
     creator_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
 
     members: Mapped[List["User"]] = relationship(secondary=club_members, back_populates="clubs")
+    messages: Mapped[List["ClubMessage"]] = relationship(back_populates="club", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<BookClub {self.name}>"
+
+class ClubMessage(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    body: Mapped[str] = mapped_column(String(1000))
+    timestamp: Mapped[datetime] = mapped_column(default=datetime.utcnow, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    club_id: Mapped[int] = mapped_column(ForeignKey('book_club.id'))
+
+    user: Mapped["User"] = relationship()
+    club: Mapped["BookClub"] = relationship(back_populates="messages")
+
+    def __repr__(self):
+        return f"<ClubMessage {self.body[:20]}>"

@@ -119,3 +119,7 @@
 ## Oturum 31: İki Dilli Arayüz (Bilingual) Entegrasyonu (+3 Puan)
 - Hedef: Uygulamanın TR ve EN dillerini destekleyecek altyapıya kavuşması.
 - Karar Süreci: Flask-Babel entegrasyonu sağlandı. Pratiklik adına 'routes.py' içinde bir 'context_processor' (sözlük) kullanılarak Navbar ve ana sayfadaki temel metinlerin seçilen dile (session tabanlı) göre anında çevrilmesi (simülasyon) sağlandı.
+
+## Oturum 32: Dijital Kitap Kulübü Modülü
+- Hedef: Kullanıcıların sosyalleşebileceği ve tartışabileceği kitap kulüpleri özelliğini eklemek.
+- Karar Süreci: "ClubMessage" modeli oluşturularak BookClub'a bağlandı. "clubs.html" ile kulüplerin listelendiği ve yeni kulüp kurulan sayfa, "club_room.html" ile de modern bir sohbet (chat) kutusu barındıran kulüp odası tasarlandı. Veritabanı göçü yapıldı.

@@ -17,3 +17,12 @@ class UpdateProfileForm(FlaskForm):
     username = StringField('Kullanıcı Adı', validators=[DataRequired(), Length(min=2, max=64)])
     avatar = FileField('Profil Fotoğrafı Güncelle', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Güncelle')
+
+class CreateClubForm(FlaskForm):
+    name = StringField('Kulüp Adı', validators=[DataRequired(), Length(min=3, max=140)])
+    description = StringField('Açıklama', validators=[DataRequired(), Length(max=500)])
+    submit = SubmitField('Kulüp Oluştur')
+
+class ClubMessageForm(FlaskForm):
+    body = StringField('Mesajınız', validators=[DataRequired(), Length(min=1, max=1000)])
+    submit = SubmitField('Gönder')
