@@ -131,3 +131,7 @@
 ## Oturum 34: Kişiselleştirme, Profil Detayları ve Tema Motoru
 - Hedef: Kullanıcılara kendilerini ifade edebilecekleri alanlar sunmak ve uygulamanın görünümünü özelleştirebilmelerini sağlamak.
 - Karar Süreci: "User" modeline "about_me", "Book" modeline "summary" alanları eklendi. "profile.html" ve "book_detail.html" sayfaları bu yeni bilgileri gösterecek şekilde tasarlandı. En önemlisi, "base.html" içerisindeki Navbar'a renkli arka plan temalarını (Gece Mavisi, Siber Mor, Zümrüt Yeşili) değiştirebilen şık bir "Tema Motoru" eklendi. Temalar "localStorage" ile tarayıcıya kaydedildi. Veritabanı göçü tamamlandı.
+
+## Oturum 35: Sosyal Ağ Özellikleri - Kullanıcı Takip (Follow/Unfollow) Sistemi
+- Hedef: Kullanıcıların etkileşimini artırmak ve gerçek bir sosyal ağ deneyimi sunmak için takip mekanizmasının eklenmesi.
+- Karar Süreci: "models.py" dosyasında kendi kendine referans veren (self-referential) "followers" çoka-çok ilişki tablosu oluşturuldu. "routes.py" içerisine başka profilleri görmeyi sağlayan "/user/<username>" ve takip işlemlerini yürüten "/follow/<username>", "/unfollow/<username>" rotaları eklendi. Arayüz tarafında "user_profile.html" şablonu oluşturularak dinamik takipçi (follower/following) rozetleri ve duruma göre değişen "Takip Et" / "Takibi Bırak" butonları yerleştirildi. Veritabanı göçleri başarıyla tamamlandı.

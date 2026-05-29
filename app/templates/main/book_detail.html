@@ -118,9 +118,11 @@
             <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <div class="d-flex align-items-center">
-                        <img src="{{ url_for('static', filename='img/avatars/' + review.user.avatar_file) }}" alt="Avatar" class="rounded-circle me-3 border shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+                        <a href="{{ url_for('main.user', username=review.user.username) }}">
+                            <img src="{{ url_for('static', filename='img/avatars/' + review.user.avatar_file) }}" alt="Avatar" class="rounded-circle me-3 border shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+                        </a>
                         <div>
-                            <h6 class="fw-bold mb-0">{{ review.user.username }}</h6>
+                            <h6 class="fw-bold mb-0"><a href="{{ url_for('main.user', username=review.user.username) }}" class="text-decoration-none text-dark">{{ review.user.username }}</a></h6>
                             <small class="text-muted">{{ review.timestamp.strftime('%d.%m.%Y %H:%M') }}</small>
                         </div>
                     </div>

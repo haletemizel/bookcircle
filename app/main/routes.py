@@ -7,7 +7,7 @@ from sqlalchemy import select, func
 from app import db
 from app.main import main
 from app.models import Book, ReadingProgress, User, BookClub, ClubMessage, Review
-from app.main.forms import BookForm, UpdateProfileForm, CreateClubForm, ClubMessageForm, ReviewForm
+from app.main.forms import BookForm, UpdateProfileForm, CreateClubForm, ClubMessageForm, ReviewForm, EmptyForm
 
 @main.route('/set_language/<lang>')
 def set_language(lang):
@@ -352,3 +352,49 @@ def book_detail(book_id):
     avg_rating = round(avg_rating, 1) if avg_rating else None
     
     return render_template('main/book_detail.html', book=book, reviews=reviews, avg_rating=avg_rating, form=form)
+
+@main.route('/user/<username>')
+@login_required
+def user(username):
+    user = db.session.scalar(select(User).where(User.username == username))
+    if not user:
+        flash('Kullanıcı bulunamadı.', 'danger')
+        return redirect(url_for('main.explore'))
+    form = EmptyForm()
+    return render_template('main/user_profile.html', user=user, form=form)
+
+@main.route('/follow/<username>', methods=['POST'])
+@login_required
+def follow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = db.session.scalar(select(User).where(User.username == username))
+        if not user:
+            flash('Kullanıcı bulunamadı.', 'danger')
+            return redirect(url_for('main.index'))
+        if user == current_user:
+            flash('Kendinizi takip edemezsiniz.', 'warning')
+            return redirect(url_for('main.user', username=username))
+        current_user.follow(user)
+        db.session.commit()
+        flash(f'{username} adlı kullanıcıyı takip ediyorsunuz!', 'success')
+        return redirect(url_for('main.user', username=username))
+    return redirect(url_for('main.index'))
+
+@main.route('/unfollow/<username>', methods=['POST'])
+@login_required
+def unfollow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = db.session.scalar(select(User).where(User.username == username))
+        if not user:
+            flash('Kullanıcı bulunamadı.', 'danger')
+            return redirect(url_for('main.index'))
+        if user == current_user:
+            flash('Kendi takibinizi bırakamazsınız.', 'warning')
+            return redirect(url_for('main.user', username=username))
+        current_user.unfollow(user)
+        db.session.commit()
+        flash(f'{username} adlı kullanıcının takibini bıraktınız.', 'info')
+        return redirect(url_for('main.user', username=username))
+    return redirect(url_for('main.index'))
