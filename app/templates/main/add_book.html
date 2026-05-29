@@ -101,13 +101,24 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3">
                         {{ form.image_url.label(class="form-label fw-semibold") }}
-                        {{ form.image_url(class="form-control bg-light" + (" is-invalid" if form.image_url.errors else
-                        ""), placeholder="Örn: https://example.com/cover.jpg") }}
+                        {{ form.image_url(class="form-control bg-light" + (" is-invalid" if form.image_url.errors else ""), placeholder="Örn: https://example.com/cover.jpg") }}
                         {% if form.image_url.errors %}
                         <div class="invalid-feedback">
                             {% for error in form.image_url.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.summary.label(class="form-label fw-semibold") }}
+                        {{ form.summary(class="form-control bg-light" + (" is-invalid" if form.summary.errors else ""), rows="4", placeholder="Kitabın kısa bir özetini yazın...") }}
+                        {% if form.summary.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.summary.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                         </div>

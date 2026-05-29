@@ -93,7 +93,8 @@ def add_book():
                 genre=form.genre.data,
                 series_name=form.series_name.data,
                 volume_number=form.volume_number.data,
-                image_url=form.image_url.data
+                image_url=form.image_url.data,
+                summary=form.summary.data
             )
             db.session.add(book)
             db.session.commit()
@@ -188,6 +189,9 @@ def profile():
                 return redirect(url_for('main.profile'))
             current_user.username = form.username.data
             
+        if form.about_me.data != current_user.about_me:
+            current_user.about_me = form.about_me.data
+            
         if form.avatar.data:
             avatar_file = save_avatar(form.avatar.data)
             current_user.avatar_file = avatar_file
@@ -197,6 +201,7 @@ def profile():
         return redirect(url_for('main.profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
         
     image_file = url_for('static', filename='img/avatars/' + current_user.avatar_file)
     return render_template('main/profile.html', form=form, image_file=image_file)

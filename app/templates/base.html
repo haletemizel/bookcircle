@@ -13,6 +13,25 @@
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        /* Background Theme Classes */
+        body.theme-night-blue {
+            background: linear-gradient(135deg, #141E30 0%, #243B55 100%) !important;
+            background-attachment: fixed !important;
+            color: #f8f9fa !important;
+        }
+        body.theme-cyber-purple {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
+            background-attachment: fixed !important;
+            color: #f8f9fa !important;
+        }
+        body.theme-emerald {
+            background: linear-gradient(135deg, #093028 0%, #237a57 100%) !important;
+            background-attachment: fixed !important;
+            color: #f8f9fa !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -60,6 +79,21 @@
                         </li>
                     {% endif %}
                     <li class="nav-item ms-lg-3 d-flex align-items-center mt-2 mt-lg-0">
+                        
+                        <!-- Arka Plan Tema Değiştirici -->
+                        <div class="dropdown me-2">
+                            <button class="btn btn-sm btn-outline-light rounded-pill border-0 dropdown-toggle" type="button" id="bgThemeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Arka Plan Teması">
+                                🎨
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bgThemeDropdown" style="min-width: 160px;">
+                                <li><h6 class="dropdown-header">Arka Plan</h6></li>
+                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class=""><span class="d-inline-block rounded-circle me-2 border" style="width: 16px; height: 16px; background-color: #f8f9fa;"></span> Standart</button></li>
+                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-night-blue"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #141E30 0%, #243B55 100%);"></span> Gece Mavisi</button></li>
+                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-cyber-purple"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #302b63 0%, #24243e 100%);"></span> Siber Mor</button></li>
+                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-emerald"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #237a57 0%, #093028 100%);"></span> Zümrüt Yeşili</button></li>
+                            </ul>
+                        </div>
+
                         <div class="btn-group me-2" role="group">
                             <a href="{{ url_for('main.set_language', lang='tr') }}" class="btn btn-sm btn-outline-light {% if current_lang == 'tr' %}active{% endif %}">TR</a>
                             <a href="{{ url_for('main.set_language', lang='en') }}" class="btn btn-sm btn-outline-light {% if current_lang == 'en' %}active{% endif %}">EN</a>
@@ -111,10 +145,42 @@
             if (htmlElement.getAttribute('data-bs-theme') === 'dark') {
                 htmlElement.setAttribute('data-bs-theme', 'light');
                 localStorage.setItem('theme', 'light');
+                
+                // Normal temaya geçerken arka plan temasını sıfırla
+                document.body.className = '';
+                localStorage.removeItem('bgTheme');
             } else {
                 htmlElement.setAttribute('data-bs-theme', 'dark');
                 localStorage.setItem('theme', 'dark');
             }
+        });
+
+        // Background Theme Engine
+        const themeColorBtns = document.querySelectorAll('.theme-color-btn');
+        const bodyElement = document.body;
+        
+        const savedBgTheme = localStorage.getItem('bgTheme');
+        if (savedBgTheme) {
+            bodyElement.className = savedBgTheme;
+        }
+
+        themeColorBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const themeClass = this.getAttribute('data-theme-class');
+                bodyElement.className = '';
+                
+                if (themeClass) {
+                    bodyElement.classList.add(themeClass);
+                    localStorage.setItem('bgTheme', themeClass);
+                    
+                    // Renkli arka planlarda karanlık modu otomatik aç (yazıların okunabilirliği için)
+                    htmlElement.setAttribute('data-bs-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.removeItem('bgTheme');
+                    // Standart'a dönüldüğünde mevcut light/dark modunda kal.
+                }
+            });
         });
     </script>
 </body>

@@ -8,13 +8,15 @@ class BookForm(FlaskForm):
     author = StringField('Yazar', validators=[DataRequired()])
     total_pages = IntegerField('Toplam Sayfa', validators=[DataRequired(), NumberRange(min=1)])
     genre = StringField('Tür')
-    series_name = StringField('Seri Adı (Opsiyonel)')
-    volume_number = IntegerField('Cilt Numarası (Opsiyonel)', validators=[Optional(), NumberRange(min=1)])
-    image_url = StringField('Kapak Resmi URL (Opsiyonel)')
-    submit = SubmitField('Kitabı Ekle')
+    series_name = StringField('Seri Adı (Varsa)', validators=[Optional(), Length(max=140)])
+    volume_number = IntegerField('Cilt/Kitap Numarası (Varsa)', validators=[Optional(), NumberRange(min=1)])
+    image_url = StringField('Kapak Görseli URL', validators=[Optional(), Length(max=255)])
+    summary = TextAreaField('Kitabın Konusu / Özeti', validators=[Optional(), Length(max=2000)])
+    submit = SubmitField('Kitap Ekle')
 
 class UpdateProfileForm(FlaskForm):
     username = StringField('Kullanıcı Adı', validators=[DataRequired(), Length(min=2, max=64)])
+    about_me = TextAreaField('Hakkımda', validators=[Optional(), Length(max=500)])
     avatar = FileField('Profil Fotoğrafı Güncelle', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Güncelle')
 

@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     username: Mapped[str] = mapped_column(String(64), index=True, unique=True)
     email: Mapped[str] = mapped_column(String(120), index=True, unique=True)
     avatar_file: Mapped[str] = mapped_column(String(20), default='default.jpg', server_default='default.jpg')
+    about_me: Mapped[Optional[str]] = mapped_column(db.Text)
     password_hash: Mapped[Optional[str]] = mapped_column(String(256))
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
@@ -63,6 +64,7 @@ class Book(db.Model):
     series_name: Mapped[Optional[str]] = mapped_column(String(140))
     volume_number: Mapped[Optional[int]]
     image_url: Mapped[Optional[str]] = mapped_column(String(255))
+    summary: Mapped[Optional[str]] = mapped_column(db.Text)
 
     reading_progresses: Mapped[List["ReadingProgress"]] = relationship(back_populates="book")
     reviews: Mapped[List["Review"]] = relationship(back_populates="book", cascade="all, delete-orphan")

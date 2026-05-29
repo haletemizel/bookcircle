@@ -127,3 +127,7 @@
 ## Oturum 33: Sosyal Etkileşim ve Dinamik Arayüz (Yorumlar, Derecelendirme, Öne Çıkanlar)
 - Hedef: Projeyi gerçek bir sosyal ağa dönüştürecek büyük final özelliklerinin entegrasyonu.
 - Karar Süreci: Kitapları puanlamak için "Review" modeli ve formu oluşturuldu. "explore.html" sayfasının en üstüne Haftanın Kitabı (Featured Book) banner'ı, "clubs.html" sayfasına "Popüler Kulüpler" bölümü eklendi. "book_detail.html" isimli yeni sayfada kullanıcı yorumlarının ve 5 yıldızlı grafiklerin sergilendiği bir değerlendirme alanı tasarlandı. Veritabanı güncellendi.
+
+## Oturum 34: Kişiselleştirme, Profil Detayları ve Tema Motoru
+- Hedef: Kullanıcılara kendilerini ifade edebilecekleri alanlar sunmak ve uygulamanın görünümünü özelleştirebilmelerini sağlamak.
+- Karar Süreci: "User" modeline "about_me", "Book" modeline "summary" alanları eklendi. "profile.html" ve "book_detail.html" sayfaları bu yeni bilgileri gösterecek şekilde tasarlandı. En önemlisi, "base.html" içerisindeki Navbar'a renkli arka plan temalarını (Gece Mavisi, Siber Mor, Zümrüt Yeşili) değiştirebilen şık bir "Tema Motoru" eklendi. Temalar "localStorage" ile tarayıcıya kaydedildi. Veritabanı göçü tamamlandı.
