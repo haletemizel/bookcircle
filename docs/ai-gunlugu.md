@@ -99,3 +99,7 @@
 ## Oturum 25: Bilgi Güvenliği Kontrolleri ve Hız Sınırlandırması
 - Hedef: Sisteme yönelik brute-force saldırılarını engellemek.
 - Karar Süreci: Flask-Limiter kütüphanesi projeye entegre edilerek, login rotasına dakikada maksimum 5 giriş denemesi yapabilme kısıtı (rate limiting) eklendi.
+
+## Oturum 27: Kullanıcı Profili ve Avatar Yükleme (Bonus Puan)
+- Hedef: Kullanıcıların kendilerine özel profil resmi (avatar) yükleyebilmesi ve kullanıcı adlarını güncelleyebilmesi.
+- Karar Süreci: User modeline 'avatar_file' sütunu eklendi. UpdateProfileForm tanımlanıp FileAllowed ile güvenlik önlemi alındı. routes.py içinde secure_filename ile dosyalar app/static/img/avatars klasörüne kaydedilecek şekilde uyarlandı. Modern bir profil arayüzü eklendi.

@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(64), index=True, unique=True)
     email: Mapped[str] = mapped_column(String(120), index=True, unique=True)
+    avatar_file: Mapped[str] = mapped_column(String(20), default='default.jpg', server_default='default.jpg')
     password_hash: Mapped[Optional[str]] = mapped_column(String(256))
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 

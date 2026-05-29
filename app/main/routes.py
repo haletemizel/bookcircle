@@ -1,9 +1,12 @@
-from flask import render_template, redirect, url_for, flash, request
+import os
+import secrets
+from werkzeug.utils import secure_filename
+from flask import render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
 from sqlalchemy import select
 from app import db
 from app.main import main
-from app.main.forms import BookForm
+from app.main.forms import BookForm, UpdateProfileForm
 from app.models import Book, ReadingProgress, User
 
 @main.route('/')
@@ -110,33 +113,40 @@ def delete_book(book_id):
         flash('Silinmek istenen kitap bulunamadı.', 'danger')
     return redirect(url_for('main.index'))
 
+def save_avatar(form_avatar):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_avatar.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(current_app.root_path, 'static/img/avatars', picture_fn)
+    
+    os.makedirs(os.path.dirname(picture_path), exist_ok=True)
+    form_avatar.save(picture_path)
+    return picture_fn
+
 @main.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    if request.method == 'POST':
-        new_username = request.form.get('username')
-        new_password = request.form.get('password')
-        
-        updated = False
-        
-        if new_username and new_username != current_user.username:
-            user = db.session.scalar(select(User).where(User.username == new_username))
+    form = UpdateProfileForm()
+    if form.validate_on_submit():
+        if form.username.data != current_user.username:
+            user = db.session.scalar(select(User).where(User.username == form.username.data))
             if user:
                 flash('Bu kullanıcı adı zaten kullanılıyor. Lütfen başka bir tane seçin.', 'danger')
                 return redirect(url_for('main.profile'))
-            current_user.username = new_username
-            updated = True
+            current_user.username = form.username.data
             
-        if new_password:
-            current_user.set_password(new_password)
-            updated = True
+        if form.avatar.data:
+            avatar_file = save_avatar(form.avatar.data)
+            current_user.avatar_file = avatar_file
             
-        if updated:
-            db.session.commit()
-            flash('Profil bilgileriniz başarıyla güncellendi!', 'success')
-            return redirect(url_for('main.profile'))
-            
-    return render_template('main/profile.html')
+        db.session.commit()
+        flash('Profil bilgileriniz başarıyla güncellendi!', 'success')
+        return redirect(url_for('main.profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        
+    image_file = url_for('static', filename='img/avatars/' + current_user.avatar_file)
+    return render_template('main/profile.html', form=form, image_file=image_file)
 
 @main.route('/explore')
 @login_required
