@@ -228,17 +228,20 @@ def explore():
     books = db.session.scalars(select(Book)).all()
     
     # Haftanın Kitabı (En yüksek puanlı veya rastgele 1 kitap)
-    featured_book = db.session.scalar(
+    # Haftanın Kitabı (Rastgele veya yüksek puanlı)
+    featured_book = db.session.scalar(select(Book).order_by(db.func.random()).limit(1))
+    
+    # Popüler Kitaplar (En Çok Yorum/Etkileşim Alan İlk 4 Kitap)
+    popular_books = db.session.scalars(
         select(Book)
         .outerjoin(Review)
         .group_by(Book.id)
-        .order_by(func.avg(Review.rating).desc())
-        .limit(1)
-    )
-    if not featured_book:
-        featured_book = db.session.scalar(select(Book).order_by(func.random()).limit(1))
-        
-    return render_template('main/explore.html', books=books, featured_book=featured_book)
+        .order_by(db.func.count(Review.id).desc())
+        .limit(4)
+    ).all()
+    
+    books = db.session.scalars(select(Book).order_by(Book.id.desc())).all()
+    return render_template('main/explore.html', title='Keşfet', books=books, featured_book=featured_book, popular_books=popular_books)
 
 @main.app_errorhandler(404)
 def not_found_error(error):

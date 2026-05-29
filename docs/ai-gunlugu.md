@@ -135,3 +135,7 @@
 ## Oturum 35: Sosyal Ağ Özellikleri - Kullanıcı Takip (Follow/Unfollow) Sistemi
 - Hedef: Kullanıcıların etkileşimini artırmak ve gerçek bir sosyal ağ deneyimi sunmak için takip mekanizmasının eklenmesi.
 - Karar Süreci: "models.py" dosyasında kendi kendine referans veren (self-referential) "followers" çoka-çok ilişki tablosu oluşturuldu. "routes.py" içerisine başka profilleri görmeyi sağlayan "/user/<username>" ve takip işlemlerini yürüten "/follow/<username>", "/unfollow/<username>" rotaları eklendi. Arayüz tarafında "user_profile.html" şablonu oluşturularak dinamik takipçi (follower/following) rozetleri ve duruma göre değişen "Takip Et" / "Takibi Bırak" butonları yerleştirildi. Veritabanı göçleri başarıyla tamamlandı.
+
+## Oturum 36: Dinamik Keşfet Vitrini (Popüler Kitaplar ve Görsel Geliştirmeler)
+- Hedef: Sitenin ana vitrini olan Keşfet sayfasına etkileşime dayalı yeni bir dinamizm katmak.
+- Karar Süreci: "routes.py" dosyasındaki "/explore" rotasına, kitapları üzerlerindeki "Review" sayılarına (en çok yorum alan) göre azalan şekilde sıralayarak ilk 4 kitabı (Popular Books) çeken yeni bir SQLAlchemy sorgusu yazıldı. "explore.html" şablonunda "Haftanın Kitabı" bölümünün hemen altına "🔥 Popüler Kitaplar" başlığıyla bu kitapları sergileyen 4 sütunlu şık bir vitrin (grid) eklendi. Kitap kartlarına kırmızı renkli "Yorum Sayısı" rozeti ve fareyle üzerine gelindiğinde devreye giren modern animasyon (hover, translate) kuralları uygulandı. Karanlık modla tam uyum sağlandı.

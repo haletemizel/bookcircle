@@ -39,6 +39,48 @@
 </div>
 {% endif %}
 
+{% if popular_books %}
+<!-- 🔥 Popüler Kitaplar Vitrini -->
+<div class="mb-5">
+    <div class="d-flex align-items-center mb-4">
+        <h3 class="fw-bold mb-0">🔥 Popüler Kitaplar</h3>
+        <span class="ms-3 text-muted small">En çok etkileşim alan eserler</span>
+    </div>
+    
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+        {% for book in popular_books %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover overflow-hidden position-relative">
+                {% if book.image_url %}
+                <div style="height: 200px; background-color: #f8f9fa;">
+                    <img src="{{ book.image_url }}" class="card-img-top w-100 h-100" alt="{{ book.title }} Kapak" style="object-fit: cover;">
+                </div>
+                {% else %}
+                <div style="height: 200px; background-color: #e9ecef;" class="d-flex align-items-center justify-content-center text-muted">
+                    <i class="bi bi-book fs-1 opacity-50"></i>
+                </div>
+                {% endif %}
+                
+                <!-- Yorum/Etkileşim Sayısı Rozeti -->
+                <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-danger rounded-pill shadow-sm"><i class="bi bi-chat-fill me-1"></i> {{ book.reviews|length }} Yorum</span>
+                </div>
+                
+                <div class="card-body p-3 text-center d-flex flex-column">
+                    <h6 class="fw-bold text-truncate mb-1" title="{{ book.title }}">{{ book.title }}</h6>
+                    <small class="text-muted text-truncate mb-3">{{ book.author }}</small>
+                    <div class="mt-auto">
+                        <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-sm btn-outline-dark rounded-pill w-100 fw-semibold">İncele</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<hr class="mb-5 opacity-25">
+{% endif %}
+
 {% if not books %}
 <div class="card border-0 shadow-sm rounded-4 text-center py-5">
     <div class="card-body">
