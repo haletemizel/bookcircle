@@ -1,7 +1,7 @@
 import os
 import secrets
 from werkzeug.utils import secure_filename
-from flask import render_template, redirect, url_for, flash, request, current_app
+from flask import render_template, redirect, url_for, flash, request, current_app, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import select
 from app import db
@@ -162,3 +162,20 @@ def not_found_error(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('errors/500.html'), 500
+
+@main.route('/api/v1/books', methods=['GET'])
+def api_get_books():
+    books = db.session.scalars(select(Book)).all()
+    books_list = []
+    for book in books:
+        books_list.append({
+            'id': book.id,
+            'title': book.title,
+            'author': book.author,
+            'total_pages': book.total_pages,
+            'genre': book.genre,
+            'series_name': book.series_name,
+            'volume_number': book.volume_number,
+            'image_url': book.image_url
+        })
+    return jsonify({'books': books_list, 'count': len(books_list)})

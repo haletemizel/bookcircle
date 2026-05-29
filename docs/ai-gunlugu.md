@@ -103,3 +103,7 @@
 ## Oturum 27: Kullanıcı Profili ve Avatar Yükleme (Bonus Puan)
 - Hedef: Kullanıcıların kendilerine özel profil resmi (avatar) yükleyebilmesi ve kullanıcı adlarını güncelleyebilmesi.
 - Karar Süreci: User modeline 'avatar_file' sütunu eklendi. UpdateProfileForm tanımlanıp FileAllowed ile güvenlik önlemi alındı. routes.py içinde secure_filename ile dosyalar app/static/img/avatars klasörüne kaydedilecek şekilde uyarlandı. Modern bir profil arayüzü eklendi.
+
+## Oturum 28: RESTful API Endpoint Eklenmesi (Bonus Puan)
+- Hedef: Uygulamanın dışa veri sunabilmesi için bir API köprüsü kurulması.
+- Karar Süreci: app/main/routes.py dosyasına /api/v1/books rotası eklendi. Veritabanındaki tüm kitaplar çekilerek jsonify kütüphanesi yardımıyla dış sistemlerin (mobil uygulama vb.) tüketebileceği bir JSON formatına dönüştürüldü.
