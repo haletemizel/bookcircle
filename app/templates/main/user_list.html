@@ -8,16 +8,16 @@
         <h2 class="fw-bold mb-0">👥 {{ title }}</h2>
     </div>
     <div class="col-auto">
-        <a href="{{ url_for('main.user', username=target_user.username) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-4 fw-semibold text-body-emphasis border-secondary">Geri Dön</a>
+        <a href="{{ url_for('main.user', username=target_user.username) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-4 fw-semibold text-body-emphasis border-secondary">{{ _('Geri Dön') }}</a>
     </div>
 </div>
 
 {% if not users %}
 <div class="card glass-card border-0 rounded-4 text-center py-5 animate-slide-up delay-1">
     <div class="card-body">
-        <h4 class="mb-3 opacity-75">Burada kimse yok</h4>
-        <p class="mb-4 opacity-50">Henüz listede kimse bulunmuyor.</p>
-        <a href="{{ url_for('main.explore') }}" class="btn btn-primary gradient-bar border-0 rounded-pill px-4">Kullanıcı Keşfet</a>
+        <h4 class="mb-3 opacity-75">{{ _('Burada kimse yok') }}</h4>
+        <p class="mb-4 opacity-50">{{ _('Henüz listede kimse bulunmuyor.') }}</p>
+        <a href="{{ url_for('main.explore') }}" class="btn btn-primary gradient-bar border-0 rounded-pill px-4">{{ _('Kullanıcı Keşfet') }}</a>
     </div>
 </div>
 {% else %}

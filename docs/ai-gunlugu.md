@@ -147,3 +147,7 @@
 ## Oturum 38: Merkezi Bildirim Sistemi (Notification System) Entegrasyonu
 - Hedef: BookCircle platformuna kullanıcı etkileşimlerini canlı tutacak dinamik bir Bildirim Sistemi eklemek.
 - Karar Süreci: "models.py" içerisine "Notification" modeli oluşturularak "User" ile bağlandı. "routes.py" dosyasındaki "/follow" rotasına yeni takipçi geldiğinde tetiklenen bir bildirim ekleme mekanizması kurgulandı. "base.html" navbar'ına okunmamış bildirim sayısını dinamik gösteren şık bir çan rozeti (badge) eklendi. "notifications.html" şablonu oluşturularak okunmuş ve okunmamış bildirimlerin glassmorphism arayüzünde şık şeritler halinde listelenmesi sağlandı. Veritabanı "flask db migrate" komutuyla güncellendi.
+
+## Oturum 39: İki Dilli (TR/EN) Lokalizasyon Eksiklerinin Giderilmesi
+- Hedef: Keşfet sayfası, Bildirimler ve yeni eklenen özelliklerdeki çeviri eksikliklerini gidermek.
+- Karar Süreci: Flask-Babel kullanılarak şablonlardaki (explore.html, notifications.html, user_list.html vb.) çevrilmesi gereken eksik metinler tespit edilip "{{ _('Metin') }}" formatına dönüştürüldü. "pybabel extract" ve "pybabel update" komutlarıyla bu metinler "messages.po" dosyalarına aktarıldı. İngilizce çevirileri doldurulduktan sonra "pybabel compile" ile sisteme tanıtılarak tüm uygulamanın İngilizce/Türkçe çift dilli yapısı hatasız hale getirildi.

@@ -5,8 +5,8 @@
 {% block content %}
 <div class="row mb-4 align-items-center">
     <div class="col">
-        <h2 class="fw-bold mb-0">🌍 Keşfet</h2>
-        <p class="text-muted mt-2">Topluluğumuzdaki okuyucuların kitaplıklarını incele ve yeni kitaplar keşfet!</p>
+        <h2 class="fw-bold mb-0">🌍 {{ _('Keşfet') }}</h2>
+        <p class="text-muted mt-2">{{ _('Topluluğumuzdaki okuyucuların kitaplıklarını incele ve yeni kitaplar keşfet!') }}</p>
     </div>
 </div>
 
@@ -26,12 +26,12 @@
         </div>
         <div class="col-md-8 d-flex align-items-center">
             <div class="card-body p-4 p-md-5">
-                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3 fw-bold fs-6">🌟 Haftanın Kitabı</span>
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3 fw-bold fs-6">🌟 {{ _('Haftanın Kitabı') }}</span>
                 <h2 class="card-title fw-bold display-5 mb-2">{{ featured_book.title }}</h2>
                 <h4 class="card-subtitle text-light opacity-75 mb-4">{{ featured_book.author }}</h4>
-                <p class="card-text opacity-75 mb-4 d-none d-md-block">Bu hafta topluluğumuzun en çok ilgisini çeken, yıldızları parlayan eser! Türü: {{ featured_book.genre or 'Belirtilmemiş' }}</p>
+                <p class="card-text opacity-75 mb-4 d-none d-md-block">{{ _('Bu hafta topluluğumuzun en çok ilgisini çeken, yıldızları parlayan eser!') }} {{ _('Türü:') }} {{ featured_book.genre or 'Belirtilmemiş' }}</p>
                 <a href="{{ url_for('main.book_detail', book_id=featured_book.id) }}" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-dark shadow-sm">
-                    Hemen İncele
+                    {{ _('Hemen İncele') }}
                 </a>
             </div>
         </div>
@@ -43,8 +43,8 @@
 <!-- 🔥 Popüler Kitaplar Vitrini -->
 <div class="mb-5">
     <div class="d-flex align-items-center mb-4">
-        <h3 class="fw-bold mb-0">🔥 Popüler Kitaplar</h3>
-        <span class="ms-3 text-muted small">En çok etkileşim alan eserler</span>
+        <h3 class="fw-bold mb-0">🔥 {{ _('Popüler Kitaplar') }}</h3>
+        <span class="ms-3 text-muted small">{{ _('En çok etkileşim alan eserler') }}</span>
     </div>
     
     <div class="row row-cols-2 row-cols-md-4 g-4">
@@ -63,14 +63,14 @@
                 
                 <!-- Yorum/Etkileşim Sayısı Rozeti -->
                 <div class="position-absolute top-0 end-0 m-2">
-                    <span class="badge bg-danger rounded-pill shadow-sm"><i class="bi bi-chat-fill me-1"></i> {{ book.reviews|length }} Yorum</span>
+                    <span class="badge bg-danger rounded-pill shadow-sm"><i class="bi bi-chat-fill me-1"></i> {{ book.reviews|length }} {{ _('Yorum') }}</span>
                 </div>
                 
                 <div class="card-body p-3 text-center d-flex flex-column">
                     <h6 class="fw-bold text-truncate mb-1" title="{{ book.title }}">{{ book.title }}</h6>
                     <small class="text-muted text-truncate mb-3">{{ book.author }}</small>
                     <div class="mt-auto">
-                        <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-sm btn-outline-dark rounded-pill w-100 fw-semibold">İncele</a>
+                        <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-sm btn-outline-dark rounded-pill w-100 fw-semibold">{{ _('İncele') }}</a>
                     </div>
                 </div>
             </div>

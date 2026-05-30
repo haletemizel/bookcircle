@@ -19,19 +19,19 @@
                         <a href="{{ url_for('main.followers', username=current_user.username) }}" class="text-decoration-none text-dark transition-hover">
                             <div class="bg-light rounded-3 px-4 py-2 border h-100">
                                 <h5 class="fw-bold mb-0">{{ current_user.followers|length }}</h5>
-                                <span class="text-muted small">Takipçi</span>
+                                <span class="text-muted small">{{ _('Takipçi') }}</span>
                             </div>
                         </a>
                         <a href="{{ url_for('main.following', username=current_user.username) }}" class="text-decoration-none text-dark transition-hover">
                             <div class="bg-light rounded-3 px-4 py-2 border h-100">
                                 <h5 class="fw-bold mb-0">{{ current_user.followed|length }}</h5>
-                                <span class="text-muted small">Takip Edilen</span>
+                                <span class="text-muted small">{{ _('Takip Edilen') }}</span>
                             </div>
                         </a>
                     </div>
                     {% if current_user.about_me %}
                         <div class="mt-2 text-start bg-light p-3 rounded-3 shadow-sm text-dark">
-                            <h6 class="fw-bold mb-2">Hakkımda</h6>
+                            <h6 class="fw-bold mb-2">{{ _('Hakkında') }}</h6>
                             <p class="small mb-0 text-break">{{ current_user.about_me }}</p>
                         </div>
                     {% endif %}

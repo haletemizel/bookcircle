@@ -1,0 +1,122 @@
+# English translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-05-30 14:21+0300\n"
+"PO-Revision-Date: 2026-05-30 14:11+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/templates/main/explore.html:8
+msgid "Keşfet"
+msgstr "Explore"
+
+#: app/templates/main/explore.html:9
+msgid ""
+"Topluluğumuzdaki okuyucuların kitaplıklarını incele ve yeni kitaplar "
+"keşfet!"
+msgstr "Browse the libraries of readers in our community and discover new books!"
+
+#: app/templates/main/explore.html:29
+msgid "Haftanın Kitabı"
+msgstr "Book of the Week"
+
+#: app/templates/main/explore.html:32
+msgid "Bu hafta topluluğumuzun en çok ilgisini çeken, yıldızları parlayan eser!"
+msgstr "The most engaging, shining star of our community this week!"
+
+#: app/templates/main/explore.html:32
+msgid "Türü:"
+msgstr "Genre:"
+
+#: app/templates/main/explore.html:34
+msgid "Hemen İncele"
+msgstr "Review Now"
+
+#: app/templates/main/explore.html:46
+msgid "Popüler Kitaplar"
+msgstr "Popular Books"
+
+#: app/templates/main/explore.html:47
+msgid "En çok etkileşim alan eserler"
+msgstr "Most engaging books"
+
+#: app/templates/main/explore.html:66
+msgid "Yorum"
+msgstr "Reviews"
+
+#: app/templates/main/explore.html:73
+msgid "İncele"
+msgstr "View"
+
+#: app/templates/main/notifications.html:9
+msgid "Bildirimler"
+msgstr "Notifications"
+
+#: app/templates/main/notifications.html:18
+msgid "Bildirim Yok"
+msgstr "No Notifications"
+
+#: app/templates/main/notifications.html:19
+msgid "Şu an için yeni bir bildiriminiz bulunmuyor."
+msgstr "You have no new notifications at the moment."
+
+#: app/templates/main/notifications.html:40
+msgid "Profile Git"
+msgstr "Go to Profile"
+
+#: app/templates/main/profile.html:22 app/templates/main/user_profile.html:20
+msgid "Takipçi"
+msgstr "Followers"
+
+#: app/templates/main/profile.html:28 app/templates/main/user_profile.html:26
+msgid "Takip Edilen"
+msgstr "Following"
+
+#: app/templates/main/profile.html:34 app/templates/main/user_profile.html:33
+msgid "Hakkında"
+msgstr "About"
+
+#: app/templates/main/user_list.html:11
+msgid "Geri Dön"
+msgstr "Go Back"
+
+#: app/templates/main/user_list.html:18
+msgid "Burada kimse yok"
+msgstr "No one is here"
+
+#: app/templates/main/user_list.html:19
+msgid "Henüz listede kimse bulunmuyor."
+msgstr "There is no one in the list yet."
+
+#: app/templates/main/user_list.html:20
+msgid "Kullanıcı Keşfet"
+msgstr "Discover Users"
+
+#: app/templates/main/user_profile.html:42
+msgid "Takibi Bırak"
+msgstr "Unfollow"
+
+#: app/templates/main/user_profile.html:47
+msgid "Takip Et"
+msgstr "Follow"
+
+#: app/templates/main/user_profile.html:51
+msgid "Profili Düzenle"
+msgstr "Edit Profile"
+
+#: app/templates/main/user_profile.html:58
+msgid "Son Değerlendirmeleri"
+msgstr "Recent Reviews"
+

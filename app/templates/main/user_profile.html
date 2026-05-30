@@ -17,20 +17,20 @@
                     <a href="{{ url_for('main.followers', username=user.username) }}" class="text-decoration-none text-dark flex-fill transition-hover">
                         <div class="bg-light rounded-3 p-3 h-100 border">
                             <h4 class="fw-bold mb-0">{{ user.followers|length }}</h4>
-                            <span class="text-muted small">Takipçi</span>
+                            <span class="text-muted small">{{ _('Takipçi') }}</span>
                         </div>
                     </a>
                     <a href="{{ url_for('main.following', username=user.username) }}" class="text-decoration-none text-dark flex-fill transition-hover">
                         <div class="bg-light rounded-3 p-3 h-100 border">
                             <h4 class="fw-bold mb-0">{{ user.followed|length }}</h4>
-                            <span class="text-muted small">Takip Edilen</span>
+                            <span class="text-muted small">{{ _('Takip Edilen') }}</span>
                         </div>
                     </a>
                 </div>
 
                 {% if user.about_me %}
                     <div class="mt-2 text-start bg-light p-3 rounded-3 shadow-sm text-dark mb-4">
-                        <h6 class="fw-bold mb-2">Hakkında</h6>
+                        <h6 class="fw-bold mb-2">{{ _('Hakkında') }}</h6>
                         <p class="small mb-0 text-break">{{ user.about_me }}</p>
                     </div>
                 {% endif %}
@@ -39,23 +39,23 @@
                     {% if current_user.is_following(user) %}
                         <form action="{{ url_for('main.unfollow', username=user.username) }}" method="POST">
                             {{ form.hidden_tag() }}
-                            <button type="submit" class="btn btn-secondary rounded-pill px-5 fw-semibold shadow-sm w-100" style="position: relative; z-index: 10;">Takibi Bırak</button>
+                            <button type="submit" class="btn btn-secondary rounded-pill px-5 fw-semibold shadow-sm w-100" style="position: relative; z-index: 10;">{{ _('Takibi Bırak') }}</button>
                         </form>
                     {% else %}
                         <form action="{{ url_for('main.follow', username=user.username) }}" method="POST">
                             {{ form.hidden_tag() }}
-                            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-semibold shadow-sm w-100" style="position: relative; z-index: 10;">Takip Et</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-semibold shadow-sm w-100" style="position: relative; z-index: 10;">{{ _('Takip Et') }}</button>
                         </form>
                     {% endif %}
                 {% else %}
-                    <a href="{{ url_for('main.profile') }}" class="btn btn-outline-dark rounded-pill px-5 fw-semibold shadow-sm w-100">Profili Düzenle</a>
+                    <a href="{{ url_for('main.profile') }}" class="btn btn-outline-dark rounded-pill px-5 fw-semibold shadow-sm w-100">{{ _('Profili Düzenle') }}</a>
                 {% endif %}
             </div>
         </div>
 
         <!-- Kullanıcının Yorumları / Etkinlikleri (Opsiyonel Geliştirme) -->
         {% if user.reviews %}
-        <h5 class="fw-bold mb-3">Son Değerlendirmeleri</h5>
+        <h5 class="fw-bold mb-3">{{ _('Son Değerlendirmeleri') }}</h5>
         <div class="row row-cols-1 g-3">
             {% for review in user.reviews[:5] %}
             <div class="col">
