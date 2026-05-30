@@ -47,6 +47,10 @@ class User(UserMixin, db.Model):
         secondaryjoin=(followers.c.follower_id == id),
         back_populates="followed"
     )
+    notifications: Mapped[List["Notification"]] = relationship(back_populates="user", cascade="all, delete-orphan", order_by="desc(Notification.timestamp)")
+
+    def unread_notification_count(self):
+        return sum(1 for n in self.notifications if not n.is_read)
 
     def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)
@@ -152,3 +156,17 @@ class Review(db.Model):
 
     def __repr__(self):
         return f"<Review {self.rating} stars for Book {self.book_id}>"
+
+class Notification(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(128), index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    timestamp: Mapped[datetime] = mapped_column(default=datetime.utcnow, index=True)
+    payload_json: Mapped[str] = mapped_column(db.Text)
+    is_read: Mapped[bool] = mapped_column(default=False)
+
+    user: Mapped["User"] = relationship(back_populates="notifications")
+
+    def get_data(self):
+        import json
+        return json.loads(str(self.payload_json))

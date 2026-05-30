@@ -6,7 +6,8 @@ from flask_login import login_required, current_user
 from sqlalchemy import select, func
 from app import db
 from app.main import main
-from app.models import Book, ReadingProgress, User, BookClub, ClubMessage, Review
+from app.models import Book, ReadingProgress, User, BookClub, ClubMessage, Review, Notification
+import json
 from app.main.forms import BookForm, UpdateProfileForm, CreateClubForm, ClubMessageForm, ReviewForm, EmptyForm
 
 @main.route('/set_language/<lang>')
@@ -396,7 +397,21 @@ def follow(username):
         if user == current_user:
             flash('Kendinizi takip edemezsiniz.', 'warning')
             return redirect(url_for('main.user', username=username))
+        # Sadece yeni takip durumunda bildirim gönder
+        is_new_follow = not current_user.is_following(user)
         current_user.follow(user)
+        
+        if is_new_follow:
+            notif = Notification(
+                name='new_follower',
+                user_id=user.id,
+                payload_json=json.dumps({
+                    'username': current_user.username,
+                    'message': f'{current_user.username} sizi takip etmeye başladı!'
+                })
+            )
+            db.session.add(notif)
+            
         db.session.commit()
         flash(f'{username} adlı kullanıcıyı takip ediyorsunuz!', 'success')
         return redirect(url_for('main.user', username=username))
@@ -419,3 +434,23 @@ def unfollow(username):
         flash(f'{username} adlı kullanıcının takibini bıraktınız.', 'info')
         return redirect(url_for('main.user', username=username))
     return redirect(url_for('main.index'))
+
+@main.route('/notifications')
+@login_required
+def notifications():
+    user_notifications = db.session.scalars(
+        select(Notification)
+        .where(Notification.user_id == current_user.id)
+        .order_by(Notification.timestamp.desc())
+    ).all()
+    
+    has_unread = False
+    for n in user_notifications:
+        if not n.is_read:
+            n.is_read = True
+            has_unread = True
+            
+    if has_unread:
+        db.session.commit()
+        
+    return render_template('main/notifications.html', notifications=user_notifications)

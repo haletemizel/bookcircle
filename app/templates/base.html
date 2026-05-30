@@ -115,6 +115,20 @@
                             </ul>
                         </div>
 
+                        <!-- Bildirimler (Notifications) -->
+                        <a href="{{ url_for('main.notifications') }}" class="btn btn-sm text-body-emphasis rounded-pill border-0 me-2 position-relative" title="Bildirimler">
+                            <i class="bi bi-bell-fill"></i>
+                            {% if current_user.is_authenticated %}
+                                {% set unread_count = current_user.unread_notification_count() %}
+                                {% if unread_count > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
+                                    {{ unread_count }}
+                                    <span class="visually-hidden">okunmamış bildirim</span>
+                                </span>
+                                {% endif %}
+                            {% endif %}
+                        </a>
+
                         <div class="btn-group me-2" role="group">
                             <a href="{{ url_for('main.set_language', lang='tr') }}" class="btn btn-sm text-body-emphasis border border-secondary border-opacity-50 {% if current_lang == 'tr' %}active bg-secondary bg-opacity-25{% endif %}">TR</a>
                             <a href="{{ url_for('main.set_language', lang='en') }}" class="btn btn-sm text-body-emphasis border border-secondary border-opacity-50 {% if current_lang == 'en' %}active bg-secondary bg-opacity-25{% endif %}">EN</a>
