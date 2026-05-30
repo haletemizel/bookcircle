@@ -87,6 +87,10 @@ def add_book():
             )
         )
         if not book:
+            cover_image_filename = None
+            if form.cover_image.data:
+                cover_image_filename = save_cover_image(form.cover_image.data)
+
             book = Book(
                 title=form.title.data, 
                 author=form.author.data, 
@@ -94,7 +98,7 @@ def add_book():
                 genre=form.genre.data,
                 series_name=form.series_name.data,
                 volume_number=form.volume_number.data,
-                image_url=form.image_url.data,
+                cover_image=cover_image_filename,
                 summary=form.summary.data
             )
             db.session.add(book)
@@ -176,6 +180,16 @@ def save_avatar(form_avatar):
     
     os.makedirs(os.path.dirname(picture_path), exist_ok=True)
     form_avatar.save(picture_path)
+    return picture_fn
+
+def save_cover_image(form_cover):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_cover.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(current_app.root_path, 'static/uploads/covers', picture_fn)
+    
+    os.makedirs(os.path.dirname(picture_path), exist_ok=True)
+    form_cover.save(picture_path)
     return picture_fn
 
 @main.route('/profile', methods=['GET', 'POST'])
@@ -268,7 +282,7 @@ def api_get_books():
             'genre': book.genre,
             'series_name': book.series_name,
             'volume_number': book.volume_number,
-            'image_url': book.image_url
+            'cover_image': book.cover_image
         })
     return jsonify({'books': books_list, 'count': len(books_list)})
 

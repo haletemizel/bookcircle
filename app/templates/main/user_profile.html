@@ -61,8 +61,8 @@
             <div class="col">
                 <div class="card border-0 shadow-sm rounded-3 h-100">
                     <div class="card-body p-3 d-flex align-items-start">
-                        {% if review.book.image_url %}
-                        <img src="{{ review.book.image_url }}" alt="Kapak" class="rounded me-3 shadow-sm" style="width: 50px; height: 70px; object-fit: cover;">
+                        {% if review.book.cover_image %}
+                        <img src="{{ url_for('static', filename='uploads/covers/' + review.book.cover_image) }}" alt="Kapak" class="rounded me-3 shadow-sm" style="width: 50px; height: 70px; object-fit: cover;">
                         {% else %}
                         <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center text-muted border shadow-sm" style="width: 50px; height: 70px;">
                             <i class="bi bi-book"></i>

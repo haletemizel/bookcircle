@@ -16,7 +16,7 @@
             </div>
 
             <div class="card-body p-4">
-                <form method="POST" action="">
+                <form method="POST" action="" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
 
                     <div class="mb-3">
@@ -101,11 +101,11 @@
                     </div>
 
                     <div class="mb-3">
-                        {{ form.image_url.label(class="form-label fw-semibold") }}
-                        {{ form.image_url(class="form-control bg-light" + (" is-invalid" if form.image_url.errors else ""), placeholder="Örn: https://example.com/cover.jpg") }}
-                        {% if form.image_url.errors %}
+                        {{ form.cover_image.label(class="form-label fw-semibold") }}
+                        {{ form.cover_image(class="form-control bg-light" + (" is-invalid" if form.cover_image.errors else "")) }}
+                        {% if form.cover_image.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.image_url.errors %}
+                            {% for error in form.cover_image.errors %}
                             <span>{{ error }}</span>
                             {% endfor %}
                         </div>

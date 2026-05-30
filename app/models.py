@@ -95,7 +95,7 @@ class Book(db.Model):
     genre: Mapped[Optional[str]] = mapped_column(String(64))
     series_name: Mapped[Optional[str]] = mapped_column(String(140))
     volume_number: Mapped[Optional[int]]
-    image_url: Mapped[Optional[str]] = mapped_column(String(255))
+    cover_image: Mapped[Optional[str]] = mapped_column(String(255))
     summary: Mapped[Optional[str]] = mapped_column(db.Text)
 
     reading_progresses: Mapped[List["ReadingProgress"]] = relationship(back_populates="book")

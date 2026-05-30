@@ -13,7 +13,7 @@ class BookForm(FlaskForm):
     genre = SelectField('Tür', choices=[('', 'Tür Seçin'), ('Roman', 'Roman'), ('Bilim Kurgu', 'Bilim Kurgu'), ('Polisiye', 'Polisiye'), ('Fantastik', 'Fantastik'), ('Klasik', 'Klasik'), ('Tarih', 'Tarih'), ('Biyografi', 'Biyografi'), ('Kişisel Gelişim', 'Kişisel Gelişim'), ('Korku/Gerilim', 'Korku/Gerilim')])
     series_name = StringField('Seri Adı (Varsa)', validators=[Optional(), Length(max=140)])
     volume_number = IntegerField('Cilt/Kitap Numarası (Varsa)', validators=[Optional(), NumberRange(min=1)])
-    image_url = StringField('Kapak Görseli URL', validators=[Optional(), Length(max=255)])
+    cover_image = FileField('Kapak Görseli', validators=[Optional(), FileAllowed(['jpg', 'png', 'jpeg'], 'Sadece resim dosyaları yüklenebilir.')])
     summary = TextAreaField('Kitabın Konusu / Özeti', validators=[Optional(), Length(max=2000)])
     submit = SubmitField('Kitap Ekle')
 
