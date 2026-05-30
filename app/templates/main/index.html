@@ -13,18 +13,18 @@
 </div>
 
 {% if not progresses.items %}
-<div class="card border-0 shadow-sm rounded-4 text-center py-5">
+<div class="card glass-card border-0 rounded-4 text-center py-5 animate-slide-up delay-1">
     <div class="card-body">
-        <h4 class="text-muted mb-3">{{ t.no_books }}</h4>
-        <p class="text-muted mb-4">{{ t.no_books_sub }}</p>
-        <a href="{{ url_for('main.add_book') }}" class="btn btn-outline-primary rounded-pill px-4">{{ t.add_first_book }}</a>
+        <h4 class="mb-3 opacity-75">{{ t.no_books }}</h4>
+        <p class="mb-4 opacity-50">{{ t.no_books_sub }}</p>
+        <a href="{{ url_for('main.add_book') }}" class="btn btn-primary gradient-bar border-0 rounded-pill px-4">{{ t.add_first_book }}</a>
     </div>
 </div>
 {% else %}
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     {% for progress in progresses %}
     <div class="col">
-        <div class="card h-100 border-0 shadow-sm rounded-4 transition-hover overflow-hidden">
+        <div class="card glass-card h-100 border-0 rounded-4 transition-hover overflow-hidden animate-slide-up delay-{{ loop.index0 % 5 + 1 }}">
             <!-- Kapak Resmi (Image URL) -->
             {% if progress.book.image_url %}
             <div style="height: 250px; overflow: hidden; background-color: #f8f9fa;" class="d-flex align-items-center justify-content-center">
@@ -75,8 +75,8 @@
                         <small class="text-muted fw-semibold">İlerleme: {{ percentage }}%</small>
                         <small class="text-muted">{{ progress.current_page }} / {{ progress.book.total_pages }} sayfa</small>
                     </div>
-                    <div class="progress mb-4 rounded-pill" style="height: 8px;">
-                        <div class="progress-bar rounded-pill {% if percentage == 100 %}bg-success opacity-75{% else %}bg-info opacity-75{% endif %}" 
+                    <div class="progress mb-4 rounded-pill bg-dark bg-opacity-25" style="height: 8px;">
+                        <div class="progress-bar rounded-pill {% if percentage == 100 %}gradient-bar-success{% else %}gradient-bar{% endif %}" 
                              role="progressbar" 
                              style="width: {{ percentage }}%;" 
                              aria-valuenow="{{ percentage }}" 
@@ -92,7 +92,7 @@
                             <form action="{{ url_for('main.update_progress', progress_id=progress.id) }}" method="POST" class="d-flex align-items-center gap-2">
                                 <input type="number" name="current_page" class="form-control form-control-sm border-secondary bg-light" 
                                        value="{{ progress.current_page }}" min="0" max="{{ progress.book.total_pages }}" required>
-                                <button type="submit" class="btn btn-sm btn-dark fw-semibold px-3 rounded-pill">Güncelle</button>
+                                <button type="submit" class="btn btn-sm btn-primary gradient-bar border-0 fw-semibold px-3 rounded-pill">Güncelle</button>
                             </form>
                             {% else %}
                             <div class="d-flex align-items-center text-success pb-1">
@@ -143,14 +143,6 @@
 </nav>
 {% endif %}
 
-<style>
-    .transition-hover {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .transition-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-    }
-</style>
+
 {% endif %}
 {% endblock %}

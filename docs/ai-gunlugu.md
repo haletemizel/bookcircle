@@ -139,3 +139,7 @@
 ## Oturum 36: Dinamik Keşfet Vitrini (Popüler Kitaplar ve Görsel Geliştirmeler)
 - Hedef: Sitenin ana vitrini olan Keşfet sayfasına etkileşime dayalı yeni bir dinamizm katmak.
 - Karar Süreci: "routes.py" dosyasındaki "/explore" rotasına, kitapları üzerlerindeki "Review" sayılarına (en çok yorum alan) göre azalan şekilde sıralayarak ilk 4 kitabı (Popular Books) çeken yeni bir SQLAlchemy sorgusu yazıldı. "explore.html" şablonunda "Haftanın Kitabı" bölümünün hemen altına "🔥 Popüler Kitaplar" başlığıyla bu kitapları sergileyen 4 sütunlu şık bir vitrin (grid) eklendi. Kitap kartlarına kırmızı renkli "Yorum Sayısı" rozeti ve fareyle üzerine gelindiğinde devreye giren modern animasyon (hover, translate) kuralları uygulandı. Karanlık modla tam uyum sağlandı.
+
+## Oturum 37: Sosyal Ağ Genişletmesi - Takipçi ve Takip Edilen Listeleme Sistemi
+- Hedef: Profil sayfalarındaki takipçi ve takip edilen sayılarının tıklanabilir hale getirilerek kullanıcıların detaylı olarak listelenmesi.
+- Karar Süreci: "routes.py" dosyasına "/user/<username>/followers" ve "/user/<username>/following" rotaları eklendi. Bu rotalar, veritabanından ilişkili listeleri ("user.followers", "user.followed") çekip yeni oluşturulan "user_list.html" şablonuna gönderdi. Profil sayfalarındaki ("profile.html" ve "user_profile.html") sayaçlar "<a>" etiketiyle sarılarak tıklanabilir hale getirildi. Yeni "user_list.html" şablonu, glassmorphism estetiğine uygun şekilde tasarlandı.

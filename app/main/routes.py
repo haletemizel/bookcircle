@@ -366,6 +366,24 @@ def user(username):
     form = EmptyForm()
     return render_template('main/user_profile.html', user=user, form=form)
 
+@main.route('/user/<username>/followers')
+@login_required
+def followers(username):
+    user = db.session.scalar(select(User).where(User.username == username))
+    if not user:
+        flash('Kullanıcı bulunamadı.', 'danger')
+        return redirect(url_for('main.index'))
+    return render_template('main/user_list.html', title=f'{username} Takipçileri', users=user.followers, type='followers', target_user=user)
+
+@main.route('/user/<username>/following')
+@login_required
+def following(username):
+    user = db.session.scalar(select(User).where(User.username == username))
+    if not user:
+        flash('Kullanıcı bulunamadı.', 'danger')
+        return redirect(url_for('main.index'))
+    return render_template('main/user_list.html', title=f'{username} Takip Edilenler', users=user.followed, type='following', target_user=user)
+
 @main.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):

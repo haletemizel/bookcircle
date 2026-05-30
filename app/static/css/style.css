@@ -2,49 +2,126 @@
 body {
     font-family: 'Inter', sans-serif;
     background-color: #f4f7f6;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphism Utilities */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
+}
+
+.glass-nav {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Mode Glassmorphism Overrides */
+[data-bs-theme="dark"] .glass-card {
+    background: rgba(30, 30, 40, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .glass-nav {
+    background: rgba(15, 15, 20, 0.7) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] body:not([class*="theme-"]) {
+    background-color: #121212 !important;
+    color: #f8f9fa !important;
 }
 
 /* Navbar Customizations */
 .navbar-brand {
     font-weight: 700;
     letter-spacing: -0.5px;
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.4);
 }
 
-.navbar-custom {
-    background-color: #1e293b;
+.navbar .nav-link, 
+.navbar .btn, 
+.navbar i, 
+.navbar svg {
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.4);
+    color: inherit;
 }
 
-/* Card Animations & Box Shadow */
+/* Card Animations & Soft Shadow */
 .card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-bs-theme="dark"] .card:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Button Hover Effects */
 .btn {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
 }
 
-/* Dark Mode Background Fix */
-[data-bs-theme="dark"] body {
-    background-color: #212529 !important;
-    color: #f8f9fa !important;
+[data-bs-theme="dark"] .btn:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
+
+/* Gradient Utilities */
+.gradient-bar {
+    background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%) !important;
+}
+.gradient-bar-success {
+    background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%) !important;
+}
+.gradient-text {
+    background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Animations */
+@keyframes slideUpFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUpFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered Delays for elements */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
 
 /* Standart Kitap Kapağı Boyutu */
 .book-cover {
     height: 250px;
     width: 100%;
     object-fit: cover;
-    border-top-left-radius: var(--bs-border-radius);
-    border-top-right-radius: var(--bs-border-radius);
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
 }

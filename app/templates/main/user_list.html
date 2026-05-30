@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - BookCircle{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h2 class="fw-bold mb-0">👥 {{ title }}</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('main.user', username=target_user.username) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-4 fw-semibold text-body-emphasis border-secondary">Geri Dön</a>
+    </div>
+</div>
+
+{% if not users %}
+<div class="card glass-card border-0 rounded-4 text-center py-5 animate-slide-up delay-1">
+    <div class="card-body">
+        <h4 class="mb-3 opacity-75">Burada kimse yok</h4>
+        <p class="mb-4 opacity-50">Henüz listede kimse bulunmuyor.</p>
+        <a href="{{ url_for('main.explore') }}" class="btn btn-primary gradient-bar border-0 rounded-pill px-4">Kullanıcı Keşfet</a>
+    </div>
+</div>
+{% else %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    {% for list_user in users %}
+    <div class="col">
+        <a href="{{ url_for('main.user', username=list_user.username) }}" class="text-decoration-none">
+            <div class="card glass-card h-100 border-0 rounded-4 transition-hover overflow-hidden animate-slide-up delay-{{ loop.index0 % 5 + 1 }}">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='img/avatars/' + list_user.avatar_file) }}" alt="Avatar" class="rounded-circle shadow-sm me-3 border" style="width: 64px; height: 64px; object-fit: cover;">
+                    <div class="flex-grow-1 overflow-hidden">
+                        <h5 class="fw-bold mb-1 text-body-emphasis text-truncate">{{ list_user.username }}</h5>
+                        <p class="small text-body-emphasis opacity-75 mb-0 text-truncate">
+                            {{ list_user.about_me if list_user.about_me else 'Kitap kurdu.' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
