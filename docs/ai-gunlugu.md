@@ -151,3 +151,7 @@
 ## Oturum 39: İki Dilli (TR/EN) Lokalizasyon Eksiklerinin Giderilmesi
 - Hedef: Keşfet sayfası, Bildirimler ve yeni eklenen özelliklerdeki çeviri eksikliklerini gidermek.
 - Karar Süreci: Flask-Babel kullanılarak şablonlardaki (explore.html, notifications.html, user_list.html vb.) çevrilmesi gereken eksik metinler tespit edilip "{{ _('Metin') }}" formatına dönüştürüldü. "pybabel extract" ve "pybabel update" komutlarıyla bu metinler "messages.po" dosyalarına aktarıldı. İngilizce çevirileri doldurulduktan sonra "pybabel compile" ile sisteme tanıtılarak tüm uygulamanın İngilizce/Türkçe çift dilli yapısı hatasız hale getirildi.
+
+## Oturum 40: Dinamik Kategori/Tür Filtreleme Sistemi
+- Hedef: Kullanıcıların kitap eklerken türleri hazır bir listeden seçmesini ve Keşfet sayfasında bu türlere göre filtreleme yapabilmesini sağlamak.
+- Karar Süreci: "forms.py" içindeki BookForm'un genre (Tür) alanı Serbest Metin (StringField) türünden çıkarılıp hazır seçenekler sunan SelectField yapısına dönüştürüldü. "add_book.html" şablonunda "form-select" sınıfı kullanılarak dropdown arayüzü sağlandı. "routes.py" dosyasındaki "/explore" rotası, URL üzerinden gelen "?genre=" parametresini yakalayarak kitap listesini ("Book.query.filter_by(genre=genre)") dinamik şekilde filtreleyecek şekilde güncellendi. "explore.html" şablonunda kitap listesinin üzerine, seçili kategoriye göre Bootstrap btn-primary ve btn-outline-primary sınıflarıyla aktiflik durumunu belirten dinamik butonlar (rozetler) eklendi. Ayrıca çeviri motoru için "Tümü" ibaresi sisteme dahil edildi.

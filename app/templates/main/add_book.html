@@ -61,8 +61,7 @@
 
                         <div class="col-md-6 mb-3">
                             {{ form.genre.label(class="form-label fw-semibold") }}
-                            {{ form.genre(class="form-control bg-light" + (" is-invalid" if form.genre.errors else ""),
-                            placeholder="Örn: Roman, Bilim Kurgu") }}
+                            {{ form.genre(class="form-select bg-light" + (" is-invalid" if form.genre.errors else "")) }}
                             {% if form.genre.errors %}
                             <div class="invalid-feedback">
                                 {% for error in form.genre.errors %}

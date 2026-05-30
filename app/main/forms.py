@@ -10,7 +10,7 @@ class BookForm(FlaskForm):
     title = StringField('Kitap Adı', validators=[DataRequired()])
     author = StringField('Yazar', validators=[DataRequired()])
     total_pages = IntegerField('Toplam Sayfa', validators=[DataRequired(), NumberRange(min=1)])
-    genre = StringField('Tür')
+    genre = SelectField('Tür', choices=[('', 'Tür Seçin'), ('Roman', 'Roman'), ('Bilim Kurgu', 'Bilim Kurgu'), ('Polisiye', 'Polisiye'), ('Fantastik', 'Fantastik'), ('Klasik', 'Klasik'), ('Tarih', 'Tarih'), ('Biyografi', 'Biyografi'), ('Kişisel Gelişim', 'Kişisel Gelişim'), ('Korku/Gerilim', 'Korku/Gerilim')])
     series_name = StringField('Seri Adı (Varsa)', validators=[Optional(), Length(max=140)])
     volume_number = IntegerField('Cilt/Kitap Numarası (Varsa)', validators=[Optional(), NumberRange(min=1)])
     image_url = StringField('Kapak Görseli URL', validators=[Optional(), Length(max=255)])

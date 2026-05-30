@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-05-30 14:21+0300\n"
+"POT-Creation-Date: 2026-05-30 14:40+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,6 +57,10 @@ msgstr ""
 
 #: app/templates/main/explore.html:73
 msgid "İncele"
+msgstr ""
+
+#: app/templates/main/explore.html:87
+msgid "Tümü"
 msgstr ""
 
 #: app/templates/main/notifications.html:9

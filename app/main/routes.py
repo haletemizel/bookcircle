@@ -226,9 +226,12 @@ def search():
 @main.route('/explore')
 @login_required
 def explore():
-    books = db.session.scalars(select(Book)).all()
+    genre_filter = request.args.get('genre')
+    if genre_filter:
+        books = db.session.scalars(select(Book).where(Book.genre == genre_filter).order_by(Book.id.desc())).all()
+    else:
+        books = db.session.scalars(select(Book).order_by(Book.id.desc())).all()
     
-    # Haftanın Kitabı (En yüksek puanlı veya rastgele 1 kitap)
     # Haftanın Kitabı (Rastgele veya yüksek puanlı)
     featured_book = db.session.scalar(select(Book).order_by(db.func.random()).limit(1))
     
@@ -241,8 +244,7 @@ def explore():
         .limit(4)
     ).all()
     
-    books = db.session.scalars(select(Book).order_by(Book.id.desc())).all()
-    return render_template('main/explore.html', title='Keşfet', books=books, featured_book=featured_book, popular_books=popular_books)
+    return render_template('main/explore.html', title='Keşfet', books=books, featured_book=featured_book, popular_books=popular_books, current_genre=genre_filter)
 
 @main.app_errorhandler(404)
 def not_found_error(error):
