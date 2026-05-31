@@ -3,7 +3,7 @@
 {% block title %}Profilim - BookCircle{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
+<div class="row justify-content-center mb-5">
     <div class="col-md-6">
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
             <div class="card-body p-5">
@@ -13,24 +13,24 @@
                     </div>
                     <h3 class="fw-bold">{{ current_user.username }}</h3>
                     <p class="text-muted">{{ current_user.email }}</p>
-                    <span class="badge bg-primary rounded-pill px-3 py-2 mb-3">Member since {{ current_user.created_at.strftime('%b %Y') }}</span>
+                    <span class="badge bg-primary rounded-pill px-3 py-2 mb-3">Üye: {{ current_user.created_at.strftime('%b %Y') }}</span>
                     
                     <div class="d-flex justify-content-center gap-3 mb-3">
-                        <a href="{{ url_for('main.followers', username=current_user.username) }}" class="text-decoration-none text-dark transition-hover">
-                            <div class="bg-light rounded-3 px-4 py-2 border h-100">
+                        <a href="{{ url_for('main.followers', username=current_user.username) }}" class="text-decoration-none text-body transition-hover">
+                            <div class="bg-body-tertiary rounded-3 px-4 py-2 border h-100">
                                 <h5 class="fw-bold mb-0">{{ current_user.followers|length }}</h5>
                                 <span class="text-muted small">{{ _('Takipçi') }}</span>
                             </div>
                         </a>
-                        <a href="{{ url_for('main.following', username=current_user.username) }}" class="text-decoration-none text-dark transition-hover">
-                            <div class="bg-light rounded-3 px-4 py-2 border h-100">
+                        <a href="{{ url_for('main.following', username=current_user.username) }}" class="text-decoration-none text-body transition-hover">
+                            <div class="bg-body-tertiary rounded-3 px-4 py-2 border h-100">
                                 <h5 class="fw-bold mb-0">{{ current_user.followed|length }}</h5>
                                 <span class="text-muted small">{{ _('Takip Edilen') }}</span>
                             </div>
                         </a>
                     </div>
                     {% if current_user.about_me %}
-                        <div class="mt-2 text-start bg-light p-3 rounded-3 shadow-sm text-dark">
+                        <div class="mt-2 text-start bg-body-tertiary p-3 rounded-3 shadow-sm text-body">
                             <h6 class="fw-bold mb-2">{{ _('Hakkında') }}</h6>
                             <p class="small mb-0 text-break">{{ current_user.about_me }}</p>
                         </div>
@@ -45,7 +45,7 @@
                     
                     <div class="mb-3">
                         {{ form.username.label(class="form-label fw-semibold") }}
-                        {{ form.username(class="form-control bg-light" + (" is-invalid" if form.username.errors else "")) }}
+                        {{ form.username(class="form-control bg-body-tertiary" + (" is-invalid" if form.username.errors else "")) }}
                         {% if form.username.errors %}
                             <div class="invalid-feedback">
                                 {% for error in form.username.errors %}
@@ -57,7 +57,7 @@
 
                     <div class="mb-3">
                         {{ form.about_me.label(class="form-label fw-semibold") }}
-                        {{ form.about_me(class="form-control bg-light" + (" is-invalid" if form.about_me.errors else ""), rows="3", placeholder="Kendinizden bahsedin...") }}
+                        {{ form.about_me(class="form-control bg-body-tertiary" + (" is-invalid" if form.about_me.errors else ""), rows="3", placeholder="Kendinizden bahsedin...") }}
                         {% if form.about_me.errors %}
                             <div class="invalid-feedback">
                                 {% for error in form.about_me.errors %}
@@ -69,7 +69,7 @@
 
                     <div class="mb-4">
                         {{ form.avatar.label(class="form-label fw-semibold") }}
-                        {{ form.avatar(class="form-control bg-light" + (" is-invalid" if form.avatar.errors else "")) }}
+                        {{ form.avatar(class="form-control bg-body-tertiary" + (" is-invalid" if form.avatar.errors else "")) }}
                         {% if form.avatar.errors %}
                             <div class="invalid-feedback">
                                 {% for error in form.avatar.errors %}
@@ -87,4 +87,108 @@
         </div>
     </div>
 </div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card bg-body shadow-sm text-center p-3 border-0 rounded-4">
+            <h5 class="text-muted mb-1">Toplam Okunan Kitap</h5>
+            <h2 class="fw-bold mb-0 text-body-emphasis">{{ total_read_books }}</h2>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-body shadow-sm text-center p-3 border-0 rounded-4">
+            <h5 class="text-muted mb-1">Toplam Okunan Sayfa</h5>
+            <h2 class="fw-bold mb-0 text-body-emphasis">{{ total_read_pages }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="card bg-body shadow p-3 border-0 rounded-4">
+            <h6 class="fw-semibold text-center mb-3 text-muted">Aylık Okuma Grafiği</h6>
+            <canvas id="monthlyChart"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mt-4 mt-md-0">
+        <div class="card bg-body shadow p-3 border-0 rounded-4">
+            <h6 class="fw-semibold text-center mb-3 text-muted">Tür Dağılımı</h6>
+            <div style="max-width: 300px; margin: 0 auto;">
+                <canvas id="genreChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const statsStr = '{{ stats_json | safe }}';
+        if(!statsStr) return;
+        
+        const stats = JSON.parse(statsStr);
+        
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark' || document.body.classList.contains('dark-mode');
+        const textColor = isDark ? '#f8f9fa' : '#212529';
+        
+        Chart.defaults.color = textColor;
+        Chart.defaults.font.family = "'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
+        const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
+        new Chart(ctxMonthly, {
+            type: 'line',
+            data: {
+                labels: stats.monthly_labels,
+                datasets: [{
+                    label: 'Okunan Kitap',
+                    data: stats.monthly_data,
+                    borderColor: '#2b2d42',
+                    backgroundColor: 'rgba(166, 193, 238, 0.4)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#4a00e0',
+                    pointBorderColor: '#fff',
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { 
+                        grid: { color: 'rgba(0,0,0,0.15)' },
+                        ticks: { color: '#212529', font: { weight: 'bold' } }
+                    },
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: 'rgba(0,0,0,0.15)' },
+                        ticks: { stepSize: 1, color: '#212529', font: { weight: 'bold' } }
+                    }
+                }
+            }
+        });
+
+        const ctxGenre = document.getElementById('genreChart').getContext('2d');
+        new Chart(ctxGenre, {
+            type: 'doughnut',
+            data: {
+                labels: stats.genre_labels,
+                datasets: [{
+                    data: stats.genre_data,
+                    backgroundColor: ['#ff4d6d', '#8338ec', '#ffbe0b', '#fb5607', '#3a86ff'],
+                    borderWidth: 0,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, color: textColor, font: { weight: 'bold' } } }
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}

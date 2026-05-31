@@ -42,7 +42,7 @@
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h5 class="card-title fw-bold mb-0 text-truncate" title="{{ book.title }}">{{ book.title }}</h5>
                     {% if book.reading_progresses %}
-                        <span class="badge bg-primary rounded-pill px-2 py-1"><small>Ekleyen: <a href="{{ url_for('main.user', username=book.reading_progresses[0].user.username) }}" class="text-white text-decoration-none">{{ book.reading_progresses[0].user.username }}</a></small></span>
+                        <span class="badge bg-primary rounded-pill px-2 py-1"><small>Ekleyen: <a href="{{ url_for('main.user', username=book.reading_progresses[0].user.username) }}" class="text-body text-decoration-none">{{ book.reading_progresses[0].user.username }}</a></small></span>
                     {% endif %}
                 </div>
                 
@@ -59,7 +59,7 @@
                 
                 {% if book.genre %}
                     <div class="mb-3">
-                        <span class="badge bg-light text-secondary border">{{ book.genre }}</span>
+                        <span class="badge bg-body-tertiary text-secondary border">{{ book.genre }}</span>
                     </div>
                 {% endif %}
                 

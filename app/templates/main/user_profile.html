@@ -14,14 +14,14 @@
                 <span class="badge bg-primary rounded-pill px-3 py-2 mb-3 opacity-75">Üye: {{ user.created_at.strftime('%b %Y') }}</span>
                 
                 <div class="d-flex justify-content-center gap-3 mb-4">
-                    <a href="{{ url_for('main.followers', username=user.username) }}" class="text-decoration-none text-dark flex-fill transition-hover">
-                        <div class="bg-light rounded-3 p-3 h-100 border">
+                    <a href="{{ url_for('main.followers', username=user.username) }}" class="text-decoration-none text-body flex-fill transition-hover">
+                        <div class="bg-body-tertiary rounded-3 p-3 h-100 border">
                             <h4 class="fw-bold mb-0">{{ user.followers|length }}</h4>
                             <span class="text-muted small">{{ _('Takipçi') }}</span>
                         </div>
                     </a>
-                    <a href="{{ url_for('main.following', username=user.username) }}" class="text-decoration-none text-dark flex-fill transition-hover">
-                        <div class="bg-light rounded-3 p-3 h-100 border">
+                    <a href="{{ url_for('main.following', username=user.username) }}" class="text-decoration-none text-body flex-fill transition-hover">
+                        <div class="bg-body-tertiary rounded-3 p-3 h-100 border">
                             <h4 class="fw-bold mb-0">{{ user.followed|length }}</h4>
                             <span class="text-muted small">{{ _('Takip Edilen') }}</span>
                         </div>
@@ -29,7 +29,7 @@
                 </div>
 
                 {% if user.about_me %}
-                    <div class="mt-2 text-start bg-light p-3 rounded-3 shadow-sm text-dark mb-4">
+                    <div class="mt-2 text-start bg-body-tertiary p-3 rounded-3 shadow-sm text-body mb-4">
                         <h6 class="fw-bold mb-2">{{ _('Hakkında') }}</h6>
                         <p class="small mb-0 text-break">{{ user.about_me }}</p>
                     </div>
@@ -53,6 +53,129 @@
             </div>
         </div>
 
+        <!-- İstatistikler -->
+        {% if raw_stats %}
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-4 text-center">📊 Okuma İstatistikleri</h5>
+                
+                <!-- Scorecards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <div class="bg-primary bg-opacity-10 rounded-4 p-3 text-center h-100 border border-primary border-opacity-25">
+                            <h2 class="fw-bold text-primary mb-0">{{ raw_stats.total_books }}</h2>
+                            <span class="small text-muted fw-semibold">Okunan Kitap</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-success bg-opacity-10 rounded-4 p-3 text-center h-100 border border-success border-opacity-25">
+                            <h2 class="fw-bold text-success mb-0">{{ raw_stats.total_pages }}</h2>
+                            <span class="small text-muted fw-semibold">Okunan Sayfa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grafikler -->
+                {% if raw_stats.total_books > 0 %}
+                <div class="row g-4">
+                    <div class="col-12">
+                        <h6 class="fw-semibold text-center mb-3 text-muted">Aylık Okuma Trendi</h6>
+                        <canvas id="monthlyChart" height="200"></canvas>
+                    </div>
+                    <div class="col-12 mt-5">
+                        <h6 class="fw-semibold text-center mb-3 text-muted">Tür Dağılımı</h6>
+                        <div class="position-relative mx-auto" style="max-width: 250px;">
+                            <canvas id="genreChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center text-muted mt-3">
+                    <p class="mb-0">Henüz bitirilmiş bir kitap yok. Okumaya devam edin!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const statsStr = '{{ stats_json | safe }}';
+                if(!statsStr) return;
+                
+                const stats = JSON.parse(statsStr);
+                if(stats.total_books === 0) return;
+
+                // Detect current theme colors
+                const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark' || document.body.classList.contains('dark-mode');
+                const textColor = isDark ? '#f8f9fa' : '#212529';
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+                Chart.defaults.color = textColor;
+                Chart.defaults.font.family = "'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
+                // Monthly Line Chart
+                const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
+                new Chart(ctxMonthly, {
+                    type: 'line',
+                    data: {
+                        labels: stats.monthly_labels,
+                        datasets: [{
+                            label: 'Okunan Kitap',
+                            data: stats.monthly_data,
+                            borderColor: '#2b2d42',
+                            backgroundColor: 'rgba(166, 193, 238, 0.4)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#4a00e0',
+                            pointBorderColor: '#fff',
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { 
+                                grid: { color: 'rgba(0,0,0,0.15)', drawBorder: false },
+                                ticks: { color: '#212529', font: { weight: 'bold' } }
+                            },
+                            y: { 
+                                beginAtZero: true, 
+                                grid: { color: 'rgba(0,0,0,0.15)', drawBorder: false },
+                                ticks: { stepSize: 1, color: '#212529', font: { weight: 'bold' } }
+                            }
+                        }
+                    }
+                });
+
+                // Genre Doughnut Chart
+                const ctxGenre = document.getElementById('genreChart').getContext('2d');
+                new Chart(ctxGenre, {
+                    type: 'doughnut',
+                    data: {
+                        labels: stats.genre_labels,
+                        datasets: [{
+                            data: stats.genre_data,
+                            backgroundColor: ['#ff4d6d', '#8338ec', '#ffbe0b', '#fb5607', '#3a86ff'],
+                            borderWidth: 0,
+                            hoverOffset: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutout: '70%',
+                        plugins: {
+                            legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, color: textColor, font: { weight: 'bold' } } }
+                        }
+                    }
+                });
+            });
+        </script>
+        {% endif %}
+
         <!-- Kullanıcının Yorumları / Etkinlikleri (Opsiyonel Geliştirme) -->
         {% if user.reviews %}
         <h5 class="fw-bold mb-3">{{ _('Son Değerlendirmeleri') }}</h5>
@@ -64,12 +187,12 @@
                         {% if review.book.cover_image %}
                         <img src="{{ url_for('static', filename='uploads/covers/' + review.book.cover_image) }}" alt="Kapak" class="rounded me-3 shadow-sm" style="width: 50px; height: 70px; object-fit: cover;">
                         {% else %}
-                        <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center text-muted border shadow-sm" style="width: 50px; height: 70px;">
+                        <div class="bg-body-tertiary rounded me-3 d-flex align-items-center justify-content-center text-muted border shadow-sm" style="width: 50px; height: 70px;">
                             <i class="bi bi-book"></i>
                         </div>
                         {% endif %}
                         <div class="flex-grow-1">
-                            <a href="{{ url_for('main.book_detail', book_id=review.book.id) }}" class="text-decoration-none fw-bold text-dark d-block text-truncate" style="max-width: 250px;">{{ review.book.title }}</a>
+                            <a href="{{ url_for('main.book_detail', book_id=review.book.id) }}" class="text-decoration-none fw-bold text-body d-block text-truncate" style="max-width: 250px;">{{ review.book.title }}</a>
                             <div class="text-warning fs-6 mb-1">
                                 {% for i in range(5) %}
                                     {% if i < review.rating %}⭐{% else %}☆{% endif %}

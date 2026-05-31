@@ -16,42 +16,9 @@
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
-    <style>
-        /* Background Theme Classes */
-        body.theme-night-blue {
-            background: linear-gradient(135deg, #141E30 0%, #243B55 100%) !important;
-            background-attachment: fixed !important;
-            color: #f8f9fa !important;
-        }
-        body.theme-cyber-purple {
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
-            background-attachment: fixed !important;
-            color: #f8f9fa !important;
-        }
-        body.theme-emerald {
-            background: linear-gradient(135deg, #093028 0%, #237a57 100%) !important;
-            background-attachment: fixed !important;
-            color: #f8f9fa !important;
-        }
-        body.theme-neon-pink {
-            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%) !important;
-            background-attachment: fixed !important;
-            color: #f8f9fa !important;
-        }
-        body.theme-sunset-orange {
-            background: linear-gradient(135deg, #f12711 0%, #f5af19 100%) !important;
-            background-attachment: fixed !important;
-            color: #f8f9fa !important;
-        }
-        body.theme-toxic-green {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
-            background-attachment: fixed !important;
-            color: #f8f9fa !important;
-        }
-    </style>
+
 </head>
-<body>
+<body class="theme-pastel-dream text-body">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg glass-nav sticky-top py-3">
@@ -84,8 +51,8 @@
                         </li>
                         <li class="nav-item ms-lg-3 d-flex align-items-center mt-2 mt-lg-0">
                             <form action="{{ url_for('main.search') }}" method="GET" class="d-flex w-100">
-                                <input class="form-control form-control-sm rounded-pill me-2 border-0 bg-secondary bg-opacity-10 text-body-emphasis" type="search" name="q" placeholder="{{ t.search_placeholder }}" aria-label="Arama" value="{{ request.args.get('q', '') }}">
-                                <button class="btn btn-sm border border-secondary border-opacity-25 text-body-emphasis rounded-pill px-3 fw-semibold" type="submit">{{ t.search_btn }}</button>
+                                <input class="form-control form-control-sm rounded-pill me-2 border-0 bg-secondary bg-opacity-10 text-body" type="search" name="q" placeholder="{{ t.search_placeholder }}" aria-label="Arama" value="{{ request.args.get('q', '') }}">
+                                <button class="btn btn-sm border border-secondary border-opacity-25 text-body rounded-pill px-3 fw-semibold" type="submit">{{ t.search_btn }}</button>
                             </form>
                         </li>
                     {% else %}
@@ -100,23 +67,19 @@
                         
                         <!-- Arka Plan Tema Değiştirici -->
                         <div class="dropdown me-2">
-                            <button class="btn btn-sm text-body-emphasis rounded-pill border-0 dropdown-toggle" type="button" id="bgThemeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Arka Plan Teması">
+                            <button class="btn btn-sm text-body rounded-pill border-0 dropdown-toggle" type="button" id="bgThemeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Arka Plan Teması">
                                 <i class="bi bi-palette-fill"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bgThemeDropdown" style="min-width: 160px;">
                                 <li><h6 class="dropdown-header">Arka Plan</h6></li>
-                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class=""><span class="d-inline-block rounded-circle me-2 border" style="width: 16px; height: 16px; background-color: #f8f9fa;"></span> Standart</button></li>
-                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-night-blue"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #141E30 0%, #243B55 100%);"></span> Gece Mavisi</button></li>
-                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-cyber-purple"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #302b63 0%, #24243e 100%);"></span> Siber Mor</button></li>
-                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-emerald"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #237a57 0%, #093028 100%);"></span> Zümrüt Yeşili</button></li>
-                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-neon-pink"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);"></span> Neon Pembe</button></li>
-                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-sunset-orange"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);"></span> Gün Batımı</button></li>
-                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-toxic-green"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);"></span> Zehirli Yeşil</button></li>
+                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-pastel-pure"><span class="d-inline-block rounded-circle me-2 border" style="width: 16px; height: 16px; background-color: #fbfbfb;"></span> Saf Krem</button></li>
+                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-pastel-dream"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);"></span> Pastel Rüya</button></li>
+                                <li><button class="dropdown-item d-flex align-items-center theme-color-btn" data-theme-class="theme-pastel-peach"><span class="d-inline-block rounded-circle me-2 border border-secondary" style="width: 16px; height: 16px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);"></span> Şeftali</button></li>
                             </ul>
                         </div>
 
                         <!-- Bildirimler (Notifications) -->
-                        <a href="{{ url_for('main.notifications') }}" class="btn btn-sm text-body-emphasis rounded-pill border-0 me-2 position-relative" title="Bildirimler">
+                        <a href="{{ url_for('main.notifications') }}" class="btn btn-sm text-body rounded-pill border-0 me-2 position-relative" title="Bildirimler">
                             <i class="bi bi-bell-fill"></i>
                             {% if current_user.is_authenticated %}
                                 {% set unread_count = current_user.unread_notification_count() %}
@@ -130,10 +93,10 @@
                         </a>
 
                         <div class="btn-group me-2" role="group">
-                            <a href="{{ url_for('main.set_language', lang='tr') }}" class="btn btn-sm text-body-emphasis border border-secondary border-opacity-50 {% if current_lang == 'tr' %}active bg-secondary bg-opacity-25{% endif %}">TR</a>
-                            <a href="{{ url_for('main.set_language', lang='en') }}" class="btn btn-sm text-body-emphasis border border-secondary border-opacity-50 {% if current_lang == 'en' %}active bg-secondary bg-opacity-25{% endif %}">EN</a>
+                            <a href="{{ url_for('main.set_language', lang='tr') }}" class="btn btn-sm text-body border border-secondary border-opacity-50 {% if current_lang == 'tr' %}active bg-secondary bg-opacity-25{% endif %}">TR</a>
+                            <a href="{{ url_for('main.set_language', lang='en') }}" class="btn btn-sm text-body border border-secondary border-opacity-50 {% if current_lang == 'en' %}active bg-secondary bg-opacity-25{% endif %}">EN</a>
                         </div>
-                        <button id="themeToggleBtn" class="btn btn-sm text-body-emphasis rounded-pill border-0" title="Karanlık/Aydınlık Mod">
+                        <button id="themeToggleBtn" class="btn btn-sm text-body rounded-pill border-0" title="Karanlık/Aydınlık Mod">
                             <i class="bi bi-moon-stars-fill"></i> / <i class="bi bi-brightness-high-fill"></i>
                         </button>
                     </li>
@@ -175,18 +138,20 @@
         const savedTheme = localStorage.getItem('theme');
         const savedBgTheme = localStorage.getItem('bgTheme');
         
-        // Varsayılan Estetik Tema: Kullanıcının seçimi yoksa Siber Mor + Dark Mode
+        // Varsayılan Estetik Tema: Kullanıcının seçimi yoksa Pastel Dream
         if (!savedTheme && !savedBgTheme) {
-            htmlElement.setAttribute('data-bs-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            document.body.className = 'theme-cyber-purple';
-            localStorage.setItem('bgTheme', 'theme-cyber-purple');
+            htmlElement.setAttribute('data-bs-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            document.body.className = 'text-body theme-pastel-dream';
+            localStorage.setItem('bgTheme', 'theme-pastel-dream');
         } else {
             if (savedTheme) {
                 htmlElement.setAttribute('data-bs-theme', savedTheme);
             }
             if (savedBgTheme) {
-                document.body.className = savedBgTheme;
+                document.body.className = 'text-body ' + savedBgTheme;
+            } else if (savedTheme === 'dark') {
+                document.body.className = 'text-body';
             }
         }
 
@@ -196,12 +161,16 @@
                 htmlElement.setAttribute('data-bs-theme', 'light');
                 localStorage.setItem('theme', 'light');
                 
-                // Normal temaya geçerken arka plan temasını sıfırla
-                document.body.className = '';
-                localStorage.removeItem('bgTheme');
+                // Aydınlık moda dönünce pastel rüya temasını geri getir
+                document.body.className = 'text-body theme-pastel-dream';
+                localStorage.setItem('bgTheme', 'theme-pastel-dream');
             } else {
                 htmlElement.setAttribute('data-bs-theme', 'dark');
                 localStorage.setItem('theme', 'dark');
+                
+                // Karanlık modda arka planı temizle ki siyah renk gözüksün
+                document.body.className = 'text-body';
+                localStorage.setItem('bgTheme', '');
             }
         });
 
@@ -212,15 +181,11 @@
         themeColorBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 const themeClass = this.getAttribute('data-theme-class');
-                bodyElement.className = '';
+                bodyElement.className = 'text-body';
                 
                 if (themeClass) {
                     bodyElement.classList.add(themeClass);
                     localStorage.setItem('bgTheme', themeClass);
-                    
-                    // Renkli arka planlarda karanlık modu otomatik aç (yazıların okunabilirliği için)
-                    htmlElement.setAttribute('data-bs-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
                 } else {
                     localStorage.removeItem('bgTheme');
                     // Standart'a dönüldüğünde mevcut light/dark modunda kal.

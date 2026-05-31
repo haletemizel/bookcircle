@@ -3,69 +3,86 @@
 {% block title %}{{ book.title }} - BookCircle{% endblock %}
 
 {% block content %}
-<div class="row">
-    <!-- Kitap Özeti (Sol) -->
-    <div class="col-lg-4 mb-4">
-        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden text-center">
-            {% if book.cover_image %}
-            <div class="bg-secondary-subtle border-bottom">
-                <img src="{{ url_for('static', filename='uploads/covers/' + book.cover_image) }}" class="card-img-top" alt="{{ book.title }} Kapak">
-            </div>
-            {% else %}
-            <div class="d-flex align-items-center justify-content-center text-muted bg-secondary-subtle border-bottom book-placeholder">
-                <div class="text-center">
-                    <i class="bi bi-book display-1 opacity-50 mb-3"></i>
-                    <div class="fw-semibold opacity-75">Kapak Görseli Yok</div>
-                </div>
-            </div>
-            {% endif %}
-            
-            <div class="card-body p-4">
-                <h3 class="fw-bold mb-1">{{ book.title }}</h3>
-                <h5 class="text-muted mb-4">{{ book.author }}</h5>
-                
-                <div class="d-flex justify-content-center align-items-center mb-3">
-                    <h2 class="fw-bold mb-0 me-2">{{ avg_rating or '-' }}</h2>
-                    <div class="text-warning fs-5">
-                        {% set rating = avg_rating|round(0, 'floor')|int if avg_rating else 0 %}
-                        {% for i in range(5) %}
-                            {% if i < rating %}⭐{% else %}☆{% endif %}
-                        {% endfor %}
-                    </div>
-                    <span class="text-muted ms-2 small">({{ reviews|length }} Değerlendirme)</span>
-                </div>
-                
-                {% if book.genre %}
-                <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill mb-2">{{ book.genre }}</span>
-                {% endif %}
-                
-                {% if book.series_name %}
-                <div class="mt-2">
-                    <span class="badge bg-secondary opacity-75 rounded-pill px-3 py-2">
-                        {{ book.series_name }} {% if book.volume_number %} - {{ book.volume_number }}. Cilt{% endif %}
-                    </span>
-                </div>
-                {% endif %}
-                
-                <div class="mt-4 text-muted small">
-                    <strong>Sayfa Sayısı:</strong> {{ book.total_pages }}
-                </div>
-
-                {% if book.summary %}
-                <div class="mt-4 text-start bg-light p-3 rounded-3 shadow-sm text-dark">
-                    <h6 class="fw-bold mb-2">Kitabın Konusu</h6>
-                    <p class="small mb-0 text-break">{{ book.summary }}</p>
-                </div>
-                {% endif %}
+<div class="row mb-5">
+    <!-- Sol Sütun: Kapak Resmi -->
+    <div class="col-md-4 col-lg-3 text-center mb-4 mb-md-0">
+        {% if book.cover_image %}
+        <a href="#" data-bs-toggle="modal" data-bs-target="#coverModal">
+            <img src="{{ url_for('static', filename='uploads/covers/' + book.cover_image) }}" class="img-fluid rounded-3 shadow transition-hover" alt="{{ book.title }} Kapak" style="max-width: 200px; object-fit: cover;">
+        </a>
+        {% else %}
+        <div class="d-flex align-items-center justify-content-center text-muted bg-secondary-subtle border book-placeholder rounded-3 shadow mx-auto" style="max-width: 200px; height: 300px;">
+            <div class="text-center">
+                <i class="bi bi-book display-1 opacity-50 mb-3"></i>
+                <div class="fw-semibold opacity-75">Kapak Yok</div>
             </div>
         </div>
+        {% endif %}
     </div>
     
-    <!-- Yorumlar ve Form (Sağ) -->
+    <!-- Sağ Sütun: Kitap Bilgileri -->
+    <div class="col-md-8 col-lg-9">
+        <h2 class="fw-bold mb-1">{{ book.title }}</h2>
+        <h4 class="text-muted mb-3">{{ book.author }}</h4>
+        
+        <div class="d-flex align-items-center mb-4">
+            <h3 class="fw-bold mb-0 me-2">{{ avg_rating or '-' }}</h3>
+            <div class="text-warning fs-5">
+                {% set rating = avg_rating|round(0, 'floor')|int if avg_rating else 0 %}
+                {% for i in range(5) %}
+                    {% if i < rating %}⭐{% else %}☆{% endif %}
+                {% endfor %}
+            </div>
+            <span class="text-muted ms-2 small">({{ reviews|length }} Değerlendirme)</span>
+        </div>
+        
+        <!-- KİTAPLIĞIMA EKLE BUTONU -->
+        <div class="mb-4">
+            {% if progress %}
+                <button class="btn btn-secondary btn-lg px-4 rounded-pill fw-semibold shadow-sm" disabled>
+                    <i class="bi bi-check-circle-fill me-2"></i>{{ progress.status }} Listenizde
+                </button>
+            {% else %}
+                <form action="{{ url_for('main.add_to_library', book_id=book.id) }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-dark btn-lg px-4 rounded-pill fw-semibold shadow-sm">
+                        <i class="bi bi-plus-circle me-2"></i>Kitaplığıma Ekle
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+        
+        <!-- Detay Rozetleri -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            {% if book.genre %}
+            <span class="badge bg-body-tertiary text-body border px-3 py-2 rounded-pill">{{ book.genre }}</span>
+            {% endif %}
+            
+            <span class="badge bg-body-tertiary text-body border px-3 py-2 rounded-pill">📖 {{ book.total_pages }} Sayfa</span>
+            
+            {% if book.series_name %}
+            <span class="badge bg-secondary opacity-75 rounded-pill px-3 py-2">
+                {{ book.series_name }} {% if book.volume_number %} - {{ book.volume_number }}. Cilt{% endif %}
+            </span>
+            {% endif %}
+        </div>
+
+        {% if book.summary %}
+        <div class="mt-4">
+            <h5 class="fw-bold mb-3">Kitabın Konusu</h5>
+            <p class="text-body lh-lg" style="opacity: 0.9;">{{ book.summary }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<hr class="opacity-25 mb-5">
+
+<!-- Yorumlar ve Form -->
+<div class="row justify-content-center">
     <div class="col-lg-8">
         <!-- Yorum Formu -->
         <div class="card border-0 shadow-sm rounded-4 mb-4">
-            <div class="card-header bg-white border-0 p-4 pb-0">
+            <div class="card-header bg-transparent border-0 p-4 pb-0">
                 <h5 class="fw-bold mb-0">✍️ Değerlendirme Yap</h5>
             </div>
             <div class="card-body p-4">
@@ -96,7 +113,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             {{ form.body.label(class="form-label fw-semibold") }}
-                            {{ form.body(class="form-control bg-light" + (" is-invalid" if form.body.errors else ""), rows="3", placeholder="Bu kitap hakkındaki düşünceleriniz neler?") }}
+                            {{ form.body(class="form-control bg-body-tertiary" + (" is-invalid" if form.body.errors else ""), rows="3", placeholder="Bu kitap hakkındaki düşünceleriniz neler?") }}
                             {% if form.body.errors %}
                             <div class="invalid-feedback">
                                 {% for error in form.body.errors %}<span>{{ error }}</span>{% endfor %}
@@ -122,7 +139,7 @@
                             <img src="{{ url_for('static', filename='img/avatars/' + review.user.avatar_file) }}" alt="Avatar" class="rounded-circle me-3 border shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
                         </a>
                         <div>
-                            <h6 class="fw-bold mb-0"><a href="{{ url_for('main.user', username=review.user.username) }}" class="text-decoration-none text-dark">{{ review.user.username }}</a></h6>
+                            <h6 class="fw-bold mb-0"><a href="{{ url_for('main.user', username=review.user.username) }}" class="text-decoration-none text-body">{{ review.user.username }}</a></h6>
                             <small class="text-muted">{{ review.timestamp.strftime('%d.%m.%Y %H:%M') }}</small>
                         </div>
                     </div>
@@ -143,6 +160,22 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- Kapak Resmi Modal -->
+{% if book.cover_image %}
+<div class="modal fade" id="coverModal" tabindex="-1" aria-labelledby="coverModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Kapat"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="{{ url_for('static', filename='uploads/covers/' + book.cover_image) }}" class="img-fluid rounded shadow-lg" style="max-height: 85vh; object-fit: contain;" alt="{{ book.title }} Büyük Kapak">
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 
 <style>
     .star-rating .star {
@@ -174,7 +207,6 @@
         const stars = document.querySelectorAll('#starRatingContainer .star');
         const ratingSelect = document.getElementById('ratingSelect');
         
-        // Initial setup based on current value (if any)
         let currentVal = ratingSelect.value;
         if(currentVal) updateStars(currentVal);
         

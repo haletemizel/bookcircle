@@ -19,12 +19,12 @@
 <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     {% for club in popular_clubs %}
     <div class="col">
-        <div class="card h-100 border-0 shadow rounded-4 text-white" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+        <div class="card h-100 border-0 shadow rounded-4 text-body" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
             <div class="card-body p-4 d-flex flex-column text-center">
                 <h4 class="fw-bold text-truncate mb-2" title="{{ club.name }}">{{ club.name }}</h4>
                 <p class="small opacity-75 mb-3">{{ club.description[:60] }}...</p>
                 <div class="mt-auto">
-                    <div class="badge bg-white text-dark rounded-pill mb-3 px-3 py-2 fs-6">👤 {{ club.members|length }} Üye</div>
+                    <div class="badge bg-white text-body rounded-pill mb-3 px-3 py-2 fs-6">👤 {{ club.members|length }} Üye</div>
                     <div>
                     {% if current_user in club.members %}
                         <a href="{{ url_for('main.club_room', club_id=club.id) }}" class="btn btn-dark rounded-pill px-4 fw-semibold w-100">Odaya Git</a>
@@ -55,7 +55,7 @@
                 <h5 class="card-title fw-bold text-truncate" title="{{ club.name }}">{{ club.name }}</h5>
                 <p class="card-text text-muted small mb-4" style="flex-grow: 1;">{{ club.description[:100] }}{% if club.description|length > 100 %}...{% endif %}</p>
                 <div class="d-flex justify-content-between align-items-center mt-auto">
-                    <span class="badge bg-light text-dark border">👤 {{ club.members|length }} Üye</span>
+                    <span class="badge bg-body-tertiary text-body border">👤 {{ club.members|length }} Üye</span>
                     {% if current_user in club.members %}
                         <a href="{{ url_for('main.club_room', club_id=club.id) }}" class="btn btn-sm btn-dark rounded-pill px-3 fw-semibold">Odaya Git</a>
                     {% else %}
@@ -87,7 +87,7 @@
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
                         {{ form.name.label(class="form-label fw-semibold") }}
-                        {{ form.name(class="form-control form-control-lg bg-light" + (" is-invalid" if form.name.errors else ""), placeholder="Kulüp Adı") }}
+                        {{ form.name(class="form-control form-control-lg bg-body-tertiary" + (" is-invalid" if form.name.errors else ""), placeholder="Kulüp Adı") }}
                         {% if form.name.errors %}
                             <div class="invalid-feedback">
                                 {% for error in form.name.errors %}<span>{{ error }}</span>{% endfor %}
@@ -96,7 +96,7 @@
                     </div>
                     <div class="mb-4">
                         {{ form.description.label(class="form-label fw-semibold") }}
-                        {{ form.description(class="form-control bg-light", rows="3", placeholder="Kulüp hakkında kısa bir açıklama") }}
+                        {{ form.description(class="form-control bg-body-tertiary", rows="3", placeholder="Kulüp hakkında kısa bir açıklama") }}
                     </div>
                     <div class="d-grid">
                         {{ form.submit(class="btn btn-primary btn-lg rounded-pill fw-semibold") }}

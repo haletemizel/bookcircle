@@ -112,12 +112,12 @@ def add_book():
             )
         )
         if not progress:
-            new_progress = ReadingProgress(user_id=current_user.id, book_id=book.id, current_page=0, status="Okunuyor")
+            new_progress = ReadingProgress(user_id=current_user.id, book_id=book.id, current_page=0, status="Okunacaklar")
             db.session.add(new_progress)
             db.session.commit()
-            flash('Kitap kütüphanenize başarıyla eklendi!', 'success')
+            flash("Kitap 'Okunacaklar' listenize eklendi!", 'success')
         else:
-            flash('Bu kitap zaten kütüphanenizde mevcut.', 'info')
+            flash('Bu kitap zaten kütüphanenizde mevcut.', 'warning')
             
         return redirect(url_for('main.index'))
     return render_template('main/add_book.html', form=form)
@@ -219,7 +219,57 @@ def profile():
         form.about_me.data = current_user.about_me
         
     image_file = url_for('static', filename='img/avatars/' + current_user.avatar_file)
-    return render_template('main/profile.html', form=form, image_file=image_file)
+    
+    # İstatistik verileri (kendi profili için)
+    # 1. Toplam Okunan Kitap (status='Bitti')
+    total_read_books = db.session.scalar(
+        select(func.count(ReadingProgress.id))
+        .where((ReadingProgress.user_id == current_user.id) & (ReadingProgress.status == 'Bitti'))
+    ) or 0
+    
+    # 2. Toplam Okunan Sayfa
+    total_read_pages = db.session.scalar(
+        select(func.sum(ReadingProgress.current_page))
+        .where(ReadingProgress.user_id == current_user.id)
+    ) or 0
+
+    monthly_data_query = db.session.execute(
+        select(
+            func.strftime('%Y-%m', ReadingProgress.updated_at).label('month'),
+            func.count(ReadingProgress.id).label('count')
+        )
+        .where((ReadingProgress.user_id == current_user.id) & (ReadingProgress.status == 'Bitti') & (ReadingProgress.updated_at != None))
+        .group_by('month')
+        .order_by('month')
+    ).all()
+    monthly_stats = {row.month: row.count for row in monthly_data_query}
+
+    genre_data_query = db.session.execute(
+        select(Book.genre, func.count(ReadingProgress.id).label('count'))
+        .join(ReadingProgress, Book.id == ReadingProgress.book_id)
+        .where((ReadingProgress.user_id == current_user.id) & (ReadingProgress.status == 'Bitti'))
+        .group_by(Book.genre)
+    ).all()
+    genre_stats = {row.genre or "Belirtilmemiş": row.count for row in genre_data_query}
+
+    stats = {
+        'total_books': total_read_books,
+        'total_pages': total_read_pages,
+        'monthly_labels': list(monthly_stats.keys()),
+        'monthly_data': list(monthly_stats.values()),
+        'genre_labels': list(genre_stats.keys()),
+        'genre_data': list(genre_stats.values())
+    }
+
+    return render_template(
+        'main/profile.html', 
+        form=form, 
+        image_file=image_file, 
+        stats_json=json.dumps(stats), 
+        raw_stats=stats,
+        total_read_books=total_read_books,
+        total_read_pages=total_read_pages
+    )
 
 @main.route('/search')
 @login_required
@@ -345,6 +395,30 @@ def club_room(club_id):
     
     return render_template('main/club_room.html', club=club, messages=messages, form=form)
 
+@main.route('/add_to_library/<int:book_id>', methods=['POST'])
+@login_required
+def add_to_library(book_id):
+    book = db.session.get(Book, book_id)
+    if not book:
+        flash('Kitap bulunamadı.', 'danger')
+        return redirect(url_for('main.explore'))
+    
+    progress = db.session.scalar(
+        select(ReadingProgress).where(
+            (ReadingProgress.user_id == current_user.id) & 
+            (ReadingProgress.book_id == book.id)
+        )
+    )
+    if not progress:
+        new_progress = ReadingProgress(user_id=current_user.id, book_id=book.id, current_page=0, status="Okunacaklar")
+        db.session.add(new_progress)
+        db.session.commit()
+        flash("Kitap 'Okunacaklar' listenize eklendi!", 'success')
+    else:
+        flash('Bu kitap zaten kütüphanenizde mevcut.', 'warning')
+        
+    return redirect(url_for('main.book_detail', book_id=book.id))
+
 @main.route('/book/<int:book_id>', methods=['GET', 'POST'])
 @login_required
 def book_detail(book_id):
@@ -371,7 +445,13 @@ def book_detail(book_id):
     avg_rating = db.session.scalar(select(func.avg(Review.rating)).where(Review.book_id == book.id))
     avg_rating = round(avg_rating, 1) if avg_rating else None
     
-    return render_template('main/book_detail.html', book=book, reviews=reviews, avg_rating=avg_rating, form=form)
+    progress = db.session.scalar(
+        select(ReadingProgress).where(
+            (ReadingProgress.user_id == current_user.id) & 
+            (ReadingProgress.book_id == book.id)
+        )
+    )
+    return render_template('main/book_detail.html', book=book, reviews=reviews, avg_rating=avg_rating, form=form, progress=progress)
 
 @main.route('/user/<username>')
 @login_required
@@ -381,7 +461,50 @@ def user(username):
         flash('Kullanıcı bulunamadı.', 'danger')
         return redirect(url_for('main.explore'))
     form = EmptyForm()
-    return render_template('main/user_profile.html', user=user, form=form)
+    
+    # 1. Toplam Okunan Kitap (status='Bitti')
+    total_read_books = db.session.scalar(
+        select(func.count(ReadingProgress.id))
+        .where((ReadingProgress.user_id == user.id) & (ReadingProgress.status == 'Bitti'))
+    ) or 0
+    
+    # 2. Toplam Okunan Sayfa
+    total_read_pages = db.session.scalar(
+        select(func.sum(ReadingProgress.current_page))
+        .where(ReadingProgress.user_id == user.id)
+    ) or 0
+
+    # 3. Aylık Okuma Grafiği
+    monthly_data_query = db.session.execute(
+        select(
+            func.strftime('%Y-%m', ReadingProgress.updated_at).label('month'),
+            func.count(ReadingProgress.id).label('count')
+        )
+        .where((ReadingProgress.user_id == user.id) & (ReadingProgress.status == 'Bitti') & (ReadingProgress.updated_at != None))
+        .group_by('month')
+        .order_by('month')
+    ).all()
+    monthly_stats = {row.month: row.count for row in monthly_data_query}
+
+    # 4. Tür Dağılımı
+    genre_data_query = db.session.execute(
+        select(Book.genre, func.count(ReadingProgress.id).label('count'))
+        .join(ReadingProgress, Book.id == ReadingProgress.book_id)
+        .where(ReadingProgress.user_id == user.id)
+        .group_by(Book.genre)
+    ).all()
+    genre_stats = {row.genre or "Belirtilmemiş": row.count for row in genre_data_query}
+
+    stats = {
+        'total_books': total_read_books,
+        'total_pages': total_read_pages,
+        'monthly_labels': list(monthly_stats.keys()),
+        'monthly_data': list(monthly_stats.values()),
+        'genre_labels': list(genre_stats.keys()),
+        'genre_data': list(genre_stats.values())
+    }
+
+    return render_template('main/user_profile.html', user=user, form=form, stats_json=json.dumps(stats), raw_stats=stats)
 
 @main.route('/user/<username>/followers')
 @login_required

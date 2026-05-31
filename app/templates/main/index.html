@@ -47,7 +47,7 @@
                     {% if progress.status == "Bitti" %}
                         <span class="badge bg-success rounded-pill px-2 py-1"><small>Bitti</small></span>
                     {% else %}
-                        <span class="badge bg-warning text-dark rounded-pill px-2 py-1"><small>Okunuyor</small></span>
+                        <span class="badge bg-warning text-body rounded-pill px-2 py-1"><small>Okunuyor</small></span>
                     {% endif %}
                 </div>
                 
@@ -64,7 +64,7 @@
                 
                 {% if progress.book.genre %}
                     <div class="mb-3">
-                        <span class="badge bg-light text-secondary border">{{ progress.book.genre }}</span>
+                        <span class="badge bg-body-tertiary text-secondary border">{{ progress.book.genre }}</span>
                     </div>
                 {% endif %}
 
@@ -75,7 +75,7 @@
                         <small class="text-muted fw-semibold">İlerleme: {{ percentage }}%</small>
                         <small class="text-muted">{{ progress.current_page }} / {{ progress.book.total_pages }} sayfa</small>
                     </div>
-                    <div class="progress mb-4 rounded-pill bg-dark bg-opacity-25" style="height: 8px;">
+                    <div class="progress mb-4 rounded-pill bg-body-tertiary bg-opacity-25" style="height: 8px;">
                         <div class="progress-bar rounded-pill {% if percentage == 100 %}gradient-bar-success{% else %}gradient-bar{% endif %}" 
                              role="progressbar" 
                              style="width: {{ percentage }}%;" 
@@ -90,7 +90,7 @@
                         <div class="flex-grow-1 me-3">
                             {% if progress.status != "Bitti" %}
                             <form action="{{ url_for('main.update_progress', progress_id=progress.id) }}" method="POST" class="d-flex align-items-center gap-2">
-                                <input type="number" name="current_page" class="form-control form-control-sm border-secondary bg-light" 
+                                <input type="number" name="current_page" class="form-control form-control-sm border-secondary bg-body-tertiary" 
                                        value="{{ progress.current_page }}" min="0" max="{{ progress.book.total_pages }}" required>
                                 <button type="submit" class="btn btn-sm btn-primary gradient-bar border-0 fw-semibold px-3 rounded-pill">Güncelle</button>
                             </form>

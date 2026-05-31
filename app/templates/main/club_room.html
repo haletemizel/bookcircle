@@ -15,12 +15,12 @@
                 <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
                     {% for member in club.members %}
                     <li class="list-group-item bg-transparent px-0 d-flex align-items-center border-0 py-2">
-                        <a href="{{ url_for('main.user', username=member.username) }}" class="text-decoration-none text-dark d-flex align-items-center">
+                        <a href="{{ url_for('main.user', username=member.username) }}" class="text-decoration-none text-body d-flex align-items-center">
                             <img src="{{ url_for('static', filename='img/avatars/' + member.avatar_file) }}" alt="Avatar" class="rounded-circle me-3 border shadow-sm" style="width: 36px; height: 36px; object-fit: cover;">
                             <span class="fw-semibold">{{ member.username }}</span>
                         </a>
                         {% if member.id == club.creator_id %}
-                            <span class="badge bg-warning text-dark ms-auto rounded-pill" style="font-size: 0.65rem;">Kurucu</span>
+                            <span class="badge bg-warning text-body ms-auto rounded-pill" style="font-size: 0.65rem;">Kurucu</span>
                         {% endif %}
                     </li>
                     {% endfor %}
@@ -47,9 +47,9 @@
                         </a>
                         {% endif %}
                         
-                        <div class="p-3 rounded-4 shadow-sm {% if message.user_id == current_user.id %}bg-primary text-white text-end rounded-bottom-end-0{% else %}bg-light rounded-bottom-start-0{% endif %}" style="max-width: 75%;">
+                        <div class="p-3 rounded-4 shadow-sm {% if message.user_id == current_user.id %}bg-primary text-body text-end rounded-bottom-end-0{% else %}bg-body-tertiary rounded-bottom-start-0{% endif %}" style="max-width: 75%;">
                             {% if message.user_id != current_user.id %}
-                            <div class="small fw-bold mb-1 opacity-75"><a href="{{ url_for('main.user', username=message.user.username) }}" class="text-dark text-decoration-none">{{ message.user.username }}</a></div>
+                            <div class="small fw-bold mb-1 opacity-75"><a href="{{ url_for('main.user', username=message.user.username) }}" class="text-body text-decoration-none">{{ message.user.username }}</a></div>
                             {% endif %}
                             <div class="text-break">{{ message.body }}</div>
                             <div class="small mt-1 opacity-50" style="font-size: 0.7rem;">{{ message.timestamp.strftime('%H:%M') }}</div>
@@ -69,7 +69,7 @@
                 <div class="mt-auto pt-3 border-top">
                     <form action="{{ url_for('main.club_room', club_id=club.id) }}" method="POST" class="d-flex gap-2">
                         {{ form.hidden_tag() }}
-                        {{ form.body(class="form-control form-control-lg rounded-pill bg-light border-0 px-4", placeholder="Mesajınızı yazın...", autocomplete="off", required=True) }}
+                        {{ form.body(class="form-control form-control-lg rounded-pill bg-body-tertiary border-0 px-4", placeholder="Mesajınızı yazın...", autocomplete="off", required=True) }}
                         <button type="submit" class="btn btn-dark rounded-pill px-4 fw-semibold d-flex align-items-center">
                             Gönder
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill ms-2" viewBox="0 0 16 16">

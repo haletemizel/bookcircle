@@ -109,7 +109,8 @@ class ReadingProgress(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     book_id: Mapped[int] = mapped_column(ForeignKey('book.id'))
     current_page: Mapped[int] = mapped_column(default=0)
-    status: Mapped[str] = mapped_column(String(20), default="Okunuyor")
+    status: Mapped[str] = mapped_column(String(20), default="Okunacaklar")
+    updated_at: Mapped[Optional[datetime]] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user: Mapped["User"] = relationship(back_populates="reading_progresses")
     book: Mapped["Book"] = relationship(back_populates="reading_progresses")
